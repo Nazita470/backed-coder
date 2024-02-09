@@ -1,0 +1,60 @@
+[
+
+    {
+        "id": 1,
+        "title": "Computadora",
+        "description": "bjrfewf",
+        "price": 300,
+        "thumbnail": "http/colores",
+        "stock": 23,
+        "code": "hsabghb"
+    },
+
+    {
+        "id": 2,
+        "title": "Celular",
+        "description": "bjrfewf",
+        "price": 100,
+        "thumbnail": "http/colores",
+        "stock": 3,
+        "code": "jovncbjk"
+    },
+    {
+        "id": 3,
+        "title": "Iphone",
+        "description": "bjrfewf",
+        "price": 400,
+        "thumbnail": "http/colores",
+        "stock": 2,
+        "code": "ernvl"
+    },
+    {
+        "id": 4,
+        "title": "PC",
+        "description": "bjrfewf",
+        "price": 350,
+        "thumbnail": "http/colores",
+        "stock": 2300,
+        "code": "erjvnaejv"
+    },
+    
+    {
+        "id": 5,
+        "title": "Cargador",
+        "description": "bjrfewf",
+        "price": 100,
+        "thumbnail": "http/colores",
+        "stock": 230,
+        "code": "hsafjvnb"
+    },
+
+    {
+        "id": 6,
+        "title": "Mouse",
+        "description": "reivnji",
+        "price": 100,
+        "thumbnail": "http/colores",
+        "stock": 2300,
+        "code": "rjnjlnc"
+    }
+]

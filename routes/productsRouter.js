@@ -15,7 +15,8 @@ products_router.use(express.json())
 products_router.use(express.urlencoded({extended:true}))
 
 products_router.get("/", (req, res) => {
-    res.send({products})
+    const limit = req.query.limit
+    limit ? res.send(products.slice(0, limit)) : res.send({products})
 })
 
 products_router.get("/:pid", (req, res) => {

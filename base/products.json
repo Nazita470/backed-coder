@@ -1,1 +1,35 @@
-[]
+[
+	{
+		"id": "7835e68c-bc4d-49e1-aa6c-5d33134e24b3",
+		"title": "Pedro",
+		"description": "jncoan",
+		"code": "ksksk",
+		"price": 244,
+		"stock": 34,
+		"category": "Goma",
+		"thumbnails": [],
+		"status": true
+	},
+	{
+		"id": "c17a0cad-9d11-4dd4-bed8-e039d4820172",
+		"title": "Pedro",
+		"price": 1004,
+		"description": "jncoan",
+		"code": "ksksk",
+		"stock": 34,
+		"category": "Goma",
+		"thumbnails": [],
+		"status": true
+	},
+	{
+		"id": "aaf8f416-97f9-4947-ac86-e4aa67db22d8",
+		"title": "Pepe",
+		"price": 1,
+		"description": "jncoan",
+		"code": "ksksk",
+		"stock": 34,
+		"category": "Goma",
+		"thumbnails": [],
+		"status": true
+	}
+]

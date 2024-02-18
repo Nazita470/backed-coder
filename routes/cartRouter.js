@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { escribirArchivo, leerArchivo } from "../utils.js";
+import express from "express"
 import { v4 as uuid4 } from "uuid"  
 const cart_router = Router()
 const cartPath = "./base/cart.json"

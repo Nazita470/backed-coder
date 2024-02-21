@@ -7,8 +7,6 @@ const cartPath = "./base/cart.json"
 const carritos = await leerArchivo(cartPath)
 const products = await leerArchivo("./base/products.json")
 
-cart_router.use(express.urlencoded({extended:true}))
-
 cart_router.post("/", (req, res) => {
     const newCart = {id: uuid4(), products: []}
     carritos.push(newCart)

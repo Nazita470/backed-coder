@@ -21,5 +21,6 @@ app.get("/products/:pid", (req, res) => {
     const param = req.params.pid
     const prod = products.find((p) => p.id == param)
     const error = {error: "Producto no encontrado"}
+    
     prod ? res.send(prod) : res.send(error)
 })

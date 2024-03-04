@@ -1,0 +1,30 @@
+<div>
+    <h1>Agregar</h1>
+    <form id="agregar" action="" method="">
+        <input type="text" id="nombreProdcuto" placeholder="Nombre">
+        <input type="text" id="precio" placeholder="Precio">
+        <button id="submitButton">Enviar</button>
+    </form>
+
+    <form id="eliminar" action="/realtimeproducts" method="delete">
+        <h1>Eliminar</h1>
+        <input type="text" placeholder="ID" id="inputID">
+        <button type="submit">Eliminar</button>
+    </form>
+
+    <div>
+        <div>
+        {{#each products}}
+            <div>
+                <p>ID: {{this.id}}</p>
+                <p>Nombre: {{this.nombre}}</p>
+                <p>Precio: {{this.precio}}</p>
+            </div>
+        {{/each}}    
+    </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>
+    

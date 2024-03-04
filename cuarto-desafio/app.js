@@ -3,6 +3,7 @@ import handlebars from "express-handlebars"
 import __dirname from "./utils.js"
 import { v4 as uuid4 } from "uuid"
 import { Server } from "socket.io"
+import realRouter from "./src/routes/RealTime.js"
 
 const app = express()
 const port = 8080
@@ -15,23 +16,13 @@ app.set("view engine", "handlebars")
 
 app.use(express.static( __dirname+"/src/public"))
 
-let products = [
+export let products = [
 ]
 
 app.get("/", (req, res) => {
     res.render("home", {products: products})
 })
-app.get("/realtimeproducts", (req, res) => {
-    res.render("realTimeProducts", {products: products})
-})
-
-app.post("/realtimeproducts", (req, res) => {
-    
-})
-
-app.delete("/realtimeproducts", (req, res) => {
-    
-})
+app.use("/realtimeproducts", realRouter)
 
 sockServer.on("connection", socket => {
     console.log("Nuevo cliente")

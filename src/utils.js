@@ -1,4 +1,6 @@
 import fs from "fs"
+import {fileURLToPath} from "url"
+import { dirname } from "path"
 
 export async function leerArchivo(path){
     let products
@@ -15,8 +17,11 @@ export async function escribirArchivo(path, arr){
 }
 
 export function validarProducto(dataProduct){
-    if(dataProduct.title && dataProduct.description && dataProduct.code && dataProduct.price && dataProduct.stock && dataProduct.category){
+    if(dataProduct.title && dataProduct.description && dataProduct.code && dataProduct.price && dataProduct.stock && dataProduct.category && dataProduct.status){
         return true
     }
     return false
 }
+
+const __filename = fileURLToPath(import.meta.url)
+export const __dirname = dirname(__filename)

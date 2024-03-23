@@ -3,7 +3,13 @@ import { validarProducto } from "../../utils.js";
 
 export class ProductsManager {
     getAll = async (limit) => {
-        const products = await productsModel.find()
+        let products
+        if(limit) {
+             products = await productsModel.find().limit(limit)
+        }else {
+            products = await productsModel.find()
+        }
+       
         return products
     }
 

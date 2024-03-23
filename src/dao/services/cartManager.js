@@ -45,6 +45,10 @@ class CartManager {
         return result
     }
 
+    addL = async () => {
+        
+    }
+
 }
 
 export default CartManager

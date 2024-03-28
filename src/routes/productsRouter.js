@@ -6,6 +6,8 @@ import { leerArchivo } from "../utils.js"
 import { validarProducto } from "../utils.js";
 import { escribirArchivo } from "../utils.js";
 import ProductsManager from "../dao/services/productManager.js";
+import productsModel from "../dao/models/productsM.js";
+import { armarUrl } from "./productsViewRouter.js";
 
 const products_router = Router()
 const products_path = "base/products.json"
@@ -15,13 +17,34 @@ const products = await leerArchivo(products_path)
 products_router.use(express.json())
 products_router.use(express.urlencoded({extended:true}))
 
-products_router.get("/", (req, res) => {
-    const limit = req.query.limit
-    //limit ? res.send(products.slice(0, limit)) : res.send({products})
-    productsManager.getAll(limit)
-    .then((p) => res.send(p))
-    //console.log(products)
-    //res.send({products})
+products_router.get("/", async (req, res) => {
+    let page = req.query.page
+    let limit = req.query.limit
+    let lastquery = req.query.query
+    let query = lastquery ? JSON.parse(lastquery) : {}
+    //console.log(query)
+    let sort = req.query.sort
+    let urlParams = armarUrl(limit, lastquery, sort) 
+    if(!page) page = 1
+    if(!limit) limit = 10
+    if(!query) query = {}
+    if(!sort) sort = null
+    //console.log(req.query.limit)
+    const obj = {
+        page: page,
+        limit: limit,
+        query: query,
+        sort: sort
+    }
+    productsManager.getByPage(obj)
+    .then(result => {
+         result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}${urlParams}`: null
+         result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}${urlParams}` : null
+        // console.log(result)
+         res.send(result)
+    })
+    
+   //console.log(products)
 })
 
 products_router.get("/:pid", (req, res) => {

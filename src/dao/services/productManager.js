@@ -13,6 +13,28 @@ export class ProductsManager {
         return products
     }
 
+    getByPage = async (objeto) => {
+        const {page, query, limit, sort} = objeto
+        console.log("sort", sort)
+        let newSort 
+        if(sort) {
+            if(sort == "asc"){
+                newSort = { price: 1 }
+            }else if(sort == "desc") {
+                newSort = {price: -1}
+            }else {
+                newSort = {}
+            }
+        }else {
+            newSort = {}
+        }
+
+        console.log(newSort)
+        
+        let products = await productsModel.paginate(query, {page, limit:limit, lean: true , sort: newSort})
+        return products
+    }
+
     getById = async (id) => {
         try {
         const products = await productsModel.find({_id: id})

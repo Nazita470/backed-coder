@@ -10,6 +10,9 @@ const carritos = await leerArchivo(cartPath)
 const products = await leerArchivo(cartPath)
 const cartManager = new CartManager()
 
+cart_router.use(express.json())
+cart_router.use(express.urlencoded({extended:true}))
+
 cart_router.post("/", (req, res) => {
     //MOngo
     cartManager.createCart()
@@ -25,7 +28,7 @@ cart_router.get("/:cid", (req, res) => {
     const id = req.params.cid
 
     //Mongo
-    cartManager.getCartById(id).then(c => res.json(c))    
+    cartManager.getCartByPopulate(id).then(c => res.json(c))    
 
     //FileSystem
     const cartJsonFind = carritos.find(c => c.id == id)
@@ -66,6 +69,42 @@ cart_router.post("/:cid/products/:pid", (req, res) => {
 
 
     res.send({status: "success", message: "Product added"})
+})
+
+cart_router.delete("/:cid/products/:pid", (req, res) => {
+    const cid = req.params.cid
+    const pid = req.params.pid
+
+    cartManager.deleteProduct(cid, pid)
+    .then((result) => {
+        console.log(result)
+        result 
+        ? 
+        res.send({status: "sucess", message: "product eliminated"})
+        :
+        res.send({status: "error", message: "product not exists"})
+    })
+}) 
+
+cart_router.put("/:cid", (req, res) => {
+    const cid = req.params.cid
+    const products = req.body
+    console.log(products)
+    cartManager.updateCart(cid, products)
+    res.send({status: "sucess", message:  products})
+})
+
+cart_router.put("/:cid/products/:pid", (req, res) => {
+   const {cid, pid} = req.params
+   const q = req.body.quantity
+   cartManager.updateProductQuantity(cid, pid, q)
+   res.send({status: "sucess", message: "Quantity modificada"})
+})
+
+cart_router.delete("/:cid", (req, res) => {
+    const cid = req.params.cid
+    cartManager.deleteProductsCarts(cid)
+    res.send({})
 })
 
 export default cart_router

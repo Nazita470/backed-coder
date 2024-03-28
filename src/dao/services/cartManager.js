@@ -1,20 +1,29 @@
+import { error } from "console"
 import cartsModel from "../models/cartM.js"
 
 class CartManager {
+
     getCartById = async (id) => {
-        const carts = await cartsModel.find({_id: id})
+        const carts = await cartsModel.find({_id: id}).lean()
         return carts
+    }
+    getCartByPopulate = async id => {
+        const carts = await cartsModel.find({_id: id}).populate("products.product").lean()
+        return carts               
     }
     createCart = async () => {
         const cart = await cartsModel.create({})
         return cart
     }
     addProducts = async (cid, prodId, quantity) => {
+        console.log(prodId)
         try{
             const cart = await cartsModel.find({_id: cid})
-            console.log(cart[0].products)
+
             const product = cart[0].products.find((p) => p.product.toString() == prodId)
 
+            console.log("Prodcuto:",product)
+            
             if(product) {
                 product.quantity += quantity
             }else {
@@ -30,23 +39,56 @@ class CartManager {
     }
 
     deleteProduct = async (cid, pid) => {
-        const cart = cartsModel.find({__id: cid})
-        const product = cart.products.findIndex((p) => p.product.toString() == pid) 
+        try{
+            const cart = await cartsModel.find({_id: cid})
+            const product = cart[0].products.find((p) => p.product.toString() == pid)
+            console.log(product)
+            if(product) {
+                cart[0].products.splice(product, 1)
+                return await cart[0].save()
+            }else {
+                console.log("producto no encontrado")
+                return false
+            }
+        }catch(error) {
+            console.error(error)
+        }
 
-        if(product > 0) {
-            cart.products.slice(product)
-        }else {
-            console.log("producto no encontrado")
+    }
+
+    updateCart = async (cid, cart) => {
+        try{
+         await cartsModel.updateOne({"_id": cid}, {$set: {products: cart}})
+        }catch(e) {
+            console.error(e)
         }
     }
 
-    deleteCart = async (cid) => {
-        const result = await cartsModel.deleteOne({__id:cid})
-        return result
+    updateProductQuantity = async (cid, pid, q) =>{
+        try{
+            const cart = await cartsModel.find({_id: cid})
+            console.log("Carrito", cart[0])
+            const product = cart[0].products.find((p) => p.product.toString() == pid) 
+            //console.log(product)
+
+            if(product) {
+                product.quantity = q
+            }else {
+                return false
+            }
+
+            console.log(cart[0])
+
+            return await cart[0].save()
+
+        }catch(error) {
+            console.error(error)
+        }
     }
 
-    addL = async () => {
-        
+    deleteProductsCarts = async (cid) => {
+        console.log("hola")
+        await cartsModel.updateOne({"_id": cid}, {$set: { products : []}})
     }
 
 }

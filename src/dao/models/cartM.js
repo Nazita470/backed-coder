@@ -2,8 +2,6 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose
 
-//Holaaaa
-
 const cartsSchema = new Schema({
     products: [
         {

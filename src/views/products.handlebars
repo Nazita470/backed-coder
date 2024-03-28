@@ -1,0 +1,42 @@
+{{#if isValid}}
+    <h2>Listado de productos</h2>
+    <hr>
+
+    <div>
+        {{#each docs}}
+            <form id="formulario" name={{this._id}}>
+                <p> <strong>ID: {{this._id}}</strong> </p>   <button type="submit">Agregar al carrito</button>
+                <p>Title: {{this.title}}</p>
+                <p>Description: {{this.description}}</p>
+                <p>Code: {{this.code}}</p>
+                <p>Price: {{this.price}}</p>
+                <p>Stock: {{this.stock}}</p>
+                <p>Category: {{this.category}}</p>
+                <p>Status: {{this.status}}</p>
+                <p>Thumbnal: {{this.thumbnal}}</p>
+            </form>
+        {{/each}}
+    </div>
+    <hr>
+    <div>
+        {{#if hasPrevPage}}
+            <a href={{this.prevLink}}>Anterior</a>
+        {{/if}}
+        &nbsp;
+        {{this.page}}
+
+        {{#if hasNextPage}}
+            <a href={{this.nextLink}}>Siguiente</a>
+        {{/if}} 
+
+    </div>
+
+{{/if}}
+
+{{#else}}
+    <h2>No hay estudiantes</h2>
+{{/else}}
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/products.js"></script>
+   

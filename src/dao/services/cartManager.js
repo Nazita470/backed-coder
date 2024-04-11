@@ -93,4 +93,8 @@ class CartManager {
 
 }
 
+export class CartFyleManager {
+    
+}
+
 export default CartManager

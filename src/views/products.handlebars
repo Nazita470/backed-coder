@@ -1,4 +1,14 @@
 {{#if isValid}}
+    {{#if hasUser}}
+        <h1>Bienvenido {{user.name}}</h1>
+
+        <div>Email: {{user.email}}</div>
+        <div>Edad: {{user.age}}</div>
+
+        <button id="logoutButton">Logout</button>
+        
+       
+    {{/if}}
     <h2>Listado de productos</h2>
     <hr>
 

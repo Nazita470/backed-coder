@@ -7,7 +7,7 @@ import { validarProducto } from "../utils.js";
 import { escribirArchivo } from "../utils.js";
 import ProductsManager from "../dao/services/productManager.js";
 import productsModel from "../dao/models/productsM.js";
-import { armarUrl } from "./productsViewRouter.js";
+import { armarUrl } from "./viewsRouter.js";
 
 const products_router = Router()
 const products_path = "base/products.json"

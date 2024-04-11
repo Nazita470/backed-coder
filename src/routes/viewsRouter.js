@@ -1,8 +1,11 @@
 import { Router } from "express";
 import ProductsManager from "../dao/services/productManager.js";
-
-const productViewRouter = new Router()
+import CartManager from "../dao/services/cartManager.js";
+import { authLogin, notLogin } from "../middlewars.js";
+const viewRouter = new Router()
+const cartManager = new CartManager()
 const productManager = new ProductsManager()
+
 
 export function armarUrl(limit, query, sort){
     let result = ""
@@ -15,8 +18,22 @@ export function armarUrl(limit, query, sort){
     return result
 }
 
-productViewRouter.get("/", (req, res) => {
-    console.log(req.query)
+viewRouter.get("/cart/:cid", (req, res) => {
+    const { cid } = req.params
+    cartManager.getCartByPopulate(cid)
+    .then(result => {
+        
+         res.render("cart", {productos: result[0].products, id:result[0]._id})
+    })
+    
+    
+})
+
+viewRouter.get("/chat", async (req, res) => {
+    res.render("chat")
+})
+
+viewRouter.get("/products", (req, res) => {
     let page = req.query.page
     let limit = req.query.limit
     let lastquery = req.query.query
@@ -41,11 +58,29 @@ productViewRouter.get("/", (req, res) => {
          console.log(page)
          result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}${urlParams}`: null
          result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}${urlParams}` : null
+         if(req.session.user) {
+            result.hasUser = true
+            result.user = req.session.user
+         } else {
+            result.hasUser = false
+         }
+         
          //console.log(result)
          res.render("products", result)
     })
     
     
 })
-export default productViewRouter
 
+viewRouter.get("/login", notLogin ,(req, res) => {
+    res.render("login")
+})
+
+viewRouter.get("/register", notLogin, (req, res) => {
+    res.render("register")
+})
+
+viewRouter.get("/profile", authLogin, (req, res) => {
+    res.render("profile",{user: req.session.user} )
+})
+export default viewRouter

@@ -17,7 +17,7 @@ loginRouter.post("/register", async (req, res) => {
     }
     const exists = await userModel.findOne({email: email})
     if(exists) return res.status(400).send({status: "error", message: "Email ya existente"})
-    
+    if(!email) return res.status(400).send({status: "error", message: "NO ingreso email"})
     const user = {
         name, 
         last_name, 

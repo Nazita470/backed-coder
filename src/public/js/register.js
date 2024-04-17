@@ -21,6 +21,11 @@ form.addEventListener("submit", (e) => {
         headers: {
             "Content-Type": "application/json"
         }
-    }).then(response => response.json())
-    .then(json => console.log(json))
+    }).then(response => {
+        if(response.status != 200){
+            window.location.replace("/register/correct?error=true")
+        }else {
+            window.location.replace("/register/correct")
+        }
+    })
 })

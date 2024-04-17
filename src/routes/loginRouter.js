@@ -16,7 +16,6 @@ loginRouter.post("/register", async (req, res) => {
         rol = "admin"
     }
     const exists = await userModel.findOne({email: email})
-    console.log(exists)
     if(exists) return res.status(400).send({status: "error", message: "Email ya existente"})
     
     const user = {
@@ -30,6 +29,7 @@ loginRouter.post("/register", async (req, res) => {
    
 
     await userModel.create(user)
+    console.log("Usuario registrado")
     res.send({status: "success", message: "User created"})
 })
 
@@ -37,15 +37,17 @@ loginRouter.post("/login",async (req, res) => {
     const {email, password} = req.body
   
     const user = await userModel.findOne({email, password})
-    console.log(user)
-    if(!user) return res.status(400).send({status: "error", message: "user not found"})
+    if(!user) {
+        console.log("Usuario no encontrado")
+        return res.status(400).send({status: "error", message: "user not found"}) 
+    }
 
     req.session.user = {
         name: `${user.name} ${user.last_name}`,
         email: user.email,
         age: user.age
     }
-
+    console.log("Session iniciada")
     res.send({status: "success", message: "Sesion initialized"})
 })
 

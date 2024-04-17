@@ -38,14 +38,13 @@ viewRouter.get("/products", (req, res) => {
     let limit = req.query.limit
     let lastquery = req.query.query
     let query = lastquery ? JSON.parse(lastquery) : {}
-    console.log(query)
     let sort = req.query.sort
     let urlParams = armarUrl(limit, lastquery, sort)
     if(!page) page = 1
     if(!limit) limit = 10
     if(!query) query = {}
     if(!sort) sort = "desc"
-    //console.log(req.query.query)
+
     const obj = {
         page: page,
         limit: limit,
@@ -55,7 +54,6 @@ viewRouter.get("/products", (req, res) => {
     productManager.getByPage(obj)
     .then(result => {
          result.isValid = page >= 1 && page <= result.totalPages
-         console.log(page)
          result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}${urlParams}`: null
          result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}${urlParams}` : null
          if(req.session.user) {
@@ -65,7 +63,7 @@ viewRouter.get("/products", (req, res) => {
             result.hasUser = false
          }
          
-         //console.log(result)
+    
          res.render("products", result)
     })
     
@@ -82,5 +80,17 @@ viewRouter.get("/register", notLogin, (req, res) => {
 
 viewRouter.get("/profile", authLogin, (req, res) => {
     res.render("profile",{user: req.session.user} )
+})
+
+viewRouter.get("/register/correct", (req, res) => {
+    
+
+    let error = req.query.error || false
+    
+    res.render("goodRegister", {error: error, isCorrect: !error})
+})
+
+viewRouter.get("/login/error", (req, res) =>{
+    res.render("badLogin")
 })
 export default viewRouter

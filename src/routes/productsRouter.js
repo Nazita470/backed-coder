@@ -22,14 +22,12 @@ products_router.get("/", async (req, res) => {
     let limit = req.query.limit
     let lastquery = req.query.query
     let query = lastquery ? JSON.parse(lastquery) : {}
-    //console.log(query)
     let sort = req.query.sort
     let urlParams = armarUrl(limit, lastquery, sort) 
     if(!page) page = 1
     if(!limit) limit = 10
     if(!query) query = {}
     if(!sort) sort = null
-    //console.log(req.query.limit)
     const obj = {
         page: page,
         limit: limit,
@@ -40,11 +38,9 @@ products_router.get("/", async (req, res) => {
     .then(result => {
          result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}${urlParams}`: null
          result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}${urlParams}` : null
-        // console.log(result)
          res.send(result)
     })
     
-   //console.log(products)
 })
 
 products_router.get("/:pid", (req, res) => {
@@ -111,7 +107,6 @@ products_router.delete("/:pid", (req, res) => {
 
     //FileSystem
     const find = products.find(p => p.id == id)
-    console.log(find)
     if(find) {
         const deletedProduct = products.filter(p => p.id != id)
         escribirArchivo(products_path, deletedProduct)

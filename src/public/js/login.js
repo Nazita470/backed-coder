@@ -20,6 +20,8 @@ form.addEventListener("submit", (e)=> {
     }).then(response => { 
         if(response.status == 200) {
             window.location.replace("/products")
+        }else {
+            window.location.replace("/login/error")
         }
     })
 })
@@ -29,5 +31,9 @@ logoutButton.addEventListener("click", (e) => {
     e.preventDefault()
     fetch("/api/session/logout", {
         methos: "POST",
-    }).then(response => response.status == 200  && window.location.replace("/login"))
+    }).then(response => {
+        if(response.status == 200 ) {
+            window.location.replace("/login")
+        }
+    })
 })

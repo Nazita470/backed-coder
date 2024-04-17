@@ -1,6 +1,5 @@
 const socket = io()
 const form = document.getElementById("formulario")
-console.log(form)
 const logoutButton = document.getElementById("logoutButton")
 
 
@@ -13,13 +12,11 @@ form.addEventListener("submit", (e) => {
         id: id,
         quantity: quantity
     }
-    console.log(product)
    socket.emit("addProducts", product)
    
 })
 
 logoutButton.addEventListener("click", (e) => {
-    console.log("Click")
     e.preventDefault()
     fetch("/api/session/logout", {
         method: "POST",

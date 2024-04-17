@@ -11,16 +11,23 @@ import viewRouter from "./routes/viewsRouter.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import loginRouter from "./routes/loginRouter.js"
+import initializedPassport from "./config/passport.config.js"
+import passport from "passport"
 
 const app = express()
-const port = 3000
+const port = 8080
 const mongoURL = 'mongodb://127.0.0.1:27017/ecommerce?retryWrites=true&w=majority'
 const messageManager = new MessageManager
 const cartManager = new CartManager()
 
 //Middlewares
+
+//Handlebars
 app.set('views', __dirname+'/views')
 app.set('view engine', 'handlebars')
+app.engine('handlebars', handlebars.engine())
+
+//Configuracion y session
 app.use(express.urlencoded({extended: true}))
 app.use(session({
     store:new MongoStore({
@@ -32,7 +39,12 @@ app.use(session({
     saveUninitialized: false
 }))
 app.use(express.static(__dirname+'/public'))
-app.engine('handlebars', handlebars.engine())
+
+
+//Passport 
+initializedPassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 //routes
 app.use("/api/products", products_router)

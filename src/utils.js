@@ -1,7 +1,7 @@
 import fs from "fs"
 import {fileURLToPath} from "url"
 import { dirname } from "path"
-
+import bcrypt from "bcrypt"
 export async function leerArchivo(path){
     let products
     try{
@@ -21,6 +21,14 @@ export function validarProducto(dataProduct){
         return true
     }
     return false
+}
+
+export function createHash(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+}
+
+export function isValidPassword(user, password) {
+    return bcrypt.compareSync(password, user.password)
 }
 
 

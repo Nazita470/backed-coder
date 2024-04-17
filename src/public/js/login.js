@@ -1,8 +1,6 @@
 const form = document.getElementById("loginForm")
 const emailInput = document.getElementById("email")
 const passwordInput = document.getElementById("password")
-const logoutButton = document.getElementById("logoutButton")
-console.log(logoutButton)
 form.addEventListener("submit", (e)=> {
     e.preventDefault()
     const email = emailInput.value
@@ -11,6 +9,8 @@ form.addEventListener("submit", (e)=> {
         email: email,
         password: password
     }
+
+    console.log(obj)
     fetch("/api/session/login",{
         method: "POST",
         body: JSON.stringify(obj),
@@ -21,13 +21,7 @@ form.addEventListener("submit", (e)=> {
         if(response.status == 200) {
             window.location.replace("/products")
         }
-    })
+        response.json()
+    }).then(json => console.log(json))
 })
 
-logoutButton.addEventListener("click", (e) => {
-    console.log("Click")
-    e.preventDefault()
-    fetch("/api/session/logout", {
-        methos: "POST",
-    }).then(response => response.status == 200  && window.location.replace("/login"))
-})

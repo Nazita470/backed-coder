@@ -11,9 +11,11 @@ import viewRouter from "./routes/viewsRouter.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
 import loginRouter from "./routes/loginRouter.js"
+import initializePassport from "./config/passport.config.js"
+import passport from "passport"
 
 const app = express()
-const port = 3000
+const port = 8080
 const mongoURL = 'mongodb://127.0.0.1:27017/ecommerce?retryWrites=true&w=majority'
 const messageManager = new MessageManager
 const cartManager = new CartManager()
@@ -39,6 +41,11 @@ app.use("/api/products", products_router)
 app.use("/api/carts", cart_router)
 app.use("/api/session", loginRouter)
 app.use("/", viewRouter)
+
+//Passport
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 const connectMongoDB = async () => {
     try {
         await mongoose.connect(mongoURL)
@@ -61,7 +68,6 @@ socketServer.on("connection", socket => {
     messageManager.getMessage()
     .then((data) =>{
          socket.emit("productosBase", data)
-         //console.log(data)
     })
 
     socket.on("message", async data => {

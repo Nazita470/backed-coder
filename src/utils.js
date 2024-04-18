@@ -1,5 +1,6 @@
 import fs from "fs"
 import {fileURLToPath} from "url"
+import bcrypt from "bcrypt"
 import { dirname } from "path"
 
 export async function leerArchivo(path){
@@ -23,6 +24,14 @@ export function validarProducto(dataProduct){
     return false
 }
 
+
+export function createHash(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+}
+
+export function isValidPassword(user, password) {
+    return bcrypt.compareSync(password, user.password)
+}
 
 const __filename = fileURLToPath(import.meta.url)
 export const __dirname = dirname(__filename)

@@ -77,7 +77,6 @@ cart_router.delete("/:cid/products/:pid", (req, res) => {
 
     cartManager.deleteProduct(cid, pid)
     .then((result) => {
-        console.log(result)
         result 
         ? 
         res.send({status: "sucess", message: "product eliminated"})
@@ -89,7 +88,6 @@ cart_router.delete("/:cid/products/:pid", (req, res) => {
 cart_router.put("/:cid", (req, res) => {
     const cid = req.params.cid
     const products = req.body
-    console.log(products)
     cartManager.updateCart(cid, products)
     res.send({status: "sucess", message:  products})
 })

@@ -2,7 +2,7 @@ const form = document.getElementById("loginForm")
 const emailInput = document.getElementById("email")
 const passwordInput = document.getElementById("password")
 const logoutButton = document.getElementById("logoutButton")
-console.log(logoutButton)
+
 form.addEventListener("submit", (e)=> {
     e.preventDefault()
     const email = emailInput.value
@@ -27,7 +27,6 @@ form.addEventListener("submit", (e)=> {
 })
 
 logoutButton.addEventListener("click", (e) => {
-    console.log("Click")
     e.preventDefault()
     fetch("/api/session/logout", {
         methos: "POST",

@@ -14,7 +14,6 @@ form.addEventListener("submit", (e) => {
         email: emailInput.value,
         password: passwordInput.value
     }
-    console.log(JSON.stringify(data))
     fetch("/api/session/register",{
         method: "POST",
         body: JSON.stringify(data),
@@ -23,6 +22,8 @@ form.addEventListener("submit", (e) => {
         }
     }).then(response => {
         if(response.status != 200){
+            console.log("error")
+
             window.location.replace("/register/correct?error=true")
         }else {
             window.location.replace("/register/correct")

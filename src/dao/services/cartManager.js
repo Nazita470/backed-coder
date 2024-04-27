@@ -17,6 +17,7 @@ class CartManager {
     }
     addProducts = async (cid, prodId, quantity) => {
         console.log(prodId)
+        console.log(cid)
         try{
             const cart = await cartsModel.find({_id: cid})
 

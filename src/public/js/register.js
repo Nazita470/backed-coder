@@ -22,11 +22,15 @@ form.addEventListener("submit", (e) => {
         }
     }).then(response => {
         if(response.status != 200){
-            console.log("error")
+           return response.json()
 
-            window.location.replace("/register/correct?error=true")
+           
         }else {
             window.location.replace("/register/correct")
         }
+    }).then(result => {
+        let message = result.error
+        if(!message) message = "Error en el registro"
+       window.location.replace(`/register/correct?error=true&&message=${message}`)
     })
 })

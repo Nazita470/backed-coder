@@ -21,8 +21,11 @@ form.addEventListener("submit", (e)=> {
         if(response.status == 200) {
             window.location.replace("/products")
         }else {
-            window.location.replace("/login/error")
+            return response.json()
         }
+    }).then(result => {
+        console.log(result)
+        window.location.replace(`/login/error?message=${result.error}`)
     })
 })
 

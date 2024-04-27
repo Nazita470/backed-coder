@@ -1,4 +1,4 @@
-import express, { urlencoded } from "express"
+import express from "express"
 import products_router from "./routes/productsRouter.js"
 import cart_router from "./routes/cartRouter.js"
 import handlebars from "express-handlebars"
@@ -77,7 +77,8 @@ socketServer.on("connection", socket => {
     })
 
     socket.on("addProducts", async data => {
-        await cartManager.addProducts("6605a516c1984f6c98900431", data.id, data.quantity)
+        console.log("cart: " + data.cart)
+        await cartManager.addProducts(data.cart, data.id, data.quantity)
         console.log("agregado")
     })
 })

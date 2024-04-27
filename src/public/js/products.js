@@ -1,18 +1,21 @@
+
 const socket = io()
 const form = document.getElementById("formulario")
 const logoutButton = document.getElementById("logoutButton")
-
-
+const cartElement = document.getElementById("cartId")
+const cart_id = logoutButton.name
+console.log(cart_id)
 form.addEventListener("submit", (e) => {
     e.preventDefault()
     let id = form.name
-    let quantity = 1
-   
+    let quantity = 1 
     let product = {
         id: id,
+        cart: cart_id,
         quantity: quantity
     }
-   socket.emit("addProducts", product)
+
+    socket.emit("addProducts", product)
    
 })
 

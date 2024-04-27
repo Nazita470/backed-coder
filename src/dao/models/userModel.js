@@ -6,6 +6,10 @@ const userSchema = new Schema({
     last_name: String,
     email: String,
     age: String,
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "carts"
+    },
     password: String,
     rol: "String",
 })

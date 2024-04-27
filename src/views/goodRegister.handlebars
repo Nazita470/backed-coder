@@ -1,6 +1,8 @@
 <div>
     {{#if error}}
-        <div>Error al registrar usuario</div>
+        {{#if msj}}
+             <div>{{msj}}</div>
+        {{/if}}
         <a href="/register">Volver a register</a>
     {{/if}}
      {{#if isCorrect}}

@@ -4,8 +4,8 @@
 
         <div>Email: {{user.email}}</div>
         <div>Edad: {{user.age}}</div>
-
-        <button id="logoutButton">Logout</button>
+        <div id="cartId" cartID={{user.cart_id}}>CartId: {{user.cart_id}}</div>
+        <button name={{user.cart_id}} id="logoutButton">Logout</button>
         
        
     {{/if}}

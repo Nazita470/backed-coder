@@ -78,7 +78,7 @@ viewRouter.get("/register", notLogin, (req, res) => {
     res.render("register")
 })
 
-viewRouter.get("/profile", authLogin, (req, res) => {
+viewRouter.get("/current", authLogin, (req, res) => {
     res.render("profile",{user: req.session.user} )
 })
 
@@ -86,11 +86,14 @@ viewRouter.get("/register/correct", (req, res) => {
     
 
     let error = req.query.error || false
-    
-    res.render("goodRegister", {error: error, isCorrect: !error})
+    let message = req.query.message
+    if(!message) message = "Error en el registro"
+    res.render("goodRegister", {error: error, isCorrect: !error, msj: message})
 })
 
 viewRouter.get("/login/error", (req, res) =>{
-    res.render("badLogin")
+    let message = req.query.message
+    if(!message) message = "Error en el login"
+    res.render("badLogin", {msj: message})
 })
 export default viewRouter

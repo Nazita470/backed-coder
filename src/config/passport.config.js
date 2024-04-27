@@ -3,8 +3,10 @@ import local from "passport-local"
 import GitHubStrategy from "passport-github2"
 import userModel from "../dao/models/userModel.js"
 import { createHash, isValidPassword } from "../utils.js";
+import UserManager from "../dao/services/userManager.js";
 
 const LocalStrategy = local.Strategy
+const userManager = new UserManager()
 const initializePassport = () => {
     const emailAdmin = "adminCoder@coder.com"
     const passwordAdmin = "adminCod3r123"
@@ -18,8 +20,8 @@ const initializePassport = () => {
         }
         , async (accessToken, refreshToken,profile, done) => {
            try{
-                let user = await userModel.findOne({email: profile._json.email})
-                if(user) { console.log("usuario ya existente"); return done(null, user) }// El usuario ya existe
+                let user = await userManager.getByEmail(profile._json.email)
+                if(user) { console.log("usuario ya existente"); return done(null, user, {message: "El usuario ya exixte"}) }// El usuario ya existe
                 
                 let newUser = {
                     name: profile._json.name,
@@ -29,8 +31,8 @@ const initializePassport = () => {
                     password: ""
                 }
 
-                let result = await userModel.create(newUser)
-                done(null, result)
+                let result = await userManager.create(newUser)
+                done(null, result, {message: "Usuario logeado correctamente"})
                 
             } catch (error) {
                 console.log(error)
@@ -44,18 +46,14 @@ const initializePassport = () => {
    passport.use("register", new LocalStrategy(
         {passReqToCallback: true, usernameField: "email"},
         async (req, username, password, done) => {
-            console.log("logear")
-            
             const {name, last_name, age} = req.body
-            console.log("entro")
             let rol = "usuario"
-            console.log("user created")
             if(username == emailAdmin && password == passwordAdmin){
                 rol = "admin"
             }
             try {
-                let user = await userModel.findOne({email: username})
-                if(user) return done(null, false)
+                let user = await userManager.getByEmail(username)
+                if(user) return done(null, false, {message: "Usuario ya existente"})
                 const newUser = {
                         name, 
                         last_name, 
@@ -66,7 +64,7 @@ const initializePassport = () => {
                     
                 }
 
-                let result = await userModel.create(newUser)
+                let result = await userManager.createUser(newUser)
                 return done(null, result)
             }catch(error) {
                 return done("Error al obtener el usuario: " + error)
@@ -79,11 +77,11 @@ const initializePassport = () => {
         {usernameField: "email"},
         async (username, password, done) => {
             try{
-                const user = await userModel.findOne({email : username})
+                const user = await userManager.getByEmail(username)
     
-                if(!user) return done(null, false)
-                if(!isValidPassword(user, password)) return done(null, false)
-                return done(null, user)
+                if(!user) return done(null, false, {message: "User doesnt exist"})
+                if(!isValidPassword(user, password)) return done(null, false, {message: "Incorrect password"})
+                return done(null, user, {message: "Log in"})
             }catch(error) {
                 return done("Error al buscar el usuario: " + error)
             }

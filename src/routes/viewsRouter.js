@@ -78,7 +78,7 @@ viewRouter.get("/register", notLogin, (req, res) => {
     res.render("register")
 })
 
-viewRouter.get("/current", authLogin, (req, res) => {
+viewRouter.get("/profile", authLogin, (req, res) => {
     res.render("profile",{user: req.session.user} )
 })
 

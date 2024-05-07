@@ -49,9 +49,10 @@ class ProductsManager {
         console.log(prod)
         if(validarProducto(prod)){
              const p = await productsModel.create(prod)
-             return p
+             return {status: 1, payload: p}
         }else {
             console.log("Usuario incompleto")
+            return {status: 0, payload: "Usuario incompleto"}
         }
     }
 

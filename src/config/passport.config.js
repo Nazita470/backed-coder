@@ -32,7 +32,7 @@ const initializePassport = () => {
                     password: ""
                 }
 
-                let result = await userManager.create(newUser)
+                let result = await userManager.createUser(newUser)
                 done(null, result, {message: "Usuario logeado correctamente"})
                 
             } catch (error) {

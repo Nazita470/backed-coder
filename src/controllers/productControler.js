@@ -1,5 +1,6 @@
-import ProductsManager from "../dao/services/productManager";
+import ProductsManager from "../dao/services/productManager.js";
 const productsManager = new ProductsManager()
+import { armarUrl } from "../routes/viewsRouter.js";
 class ProductController {
     getProducts = async (req, res) =>{
         let page = req.query.page
@@ -41,8 +42,12 @@ class ProductController {
         ...status
         }
 
-        productsManager.addProducts(newProducts)
-        res.send({status: "success", message: "User created"})
+        const result = await productsManager.addProducts(newProducts)
+        if(result.status == 0) {
+             res.send({status: "error", message: result.payload})
+        }else {
+            res.send({status: "success", message: "Product created"})
+        }
     } 
 
     updateProduct = async (req, res) => {

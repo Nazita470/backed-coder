@@ -1,13 +1,14 @@
-import CartManager from "../dao/services/cartManager";
+import CartManager from "../dao/services/cartManager.js";
 
 const cartManager = new CartManager()
 class CartController{
     createCart = async (req, res) => {
         const cart = await cartManager.createCart()
-        res.send({status: sucess, payload: cart})
+        res.send({status: "sucess", payload: cart})
     }
     getByIdPopulate = async (req, res) => {
         const id = req.params.cid
+        console.log("Desde controller" + id)
         const cart = await cartManager.getCartByPopulate(id)
         res.send(cart)
     }

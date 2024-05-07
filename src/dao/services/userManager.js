@@ -9,7 +9,7 @@ class UserManager {
     }
 
     createUser = async (u) => {
-        const cart = await  cartManager.createCart()
+        const cart = await cartManager.createCart()
         u.cart = cart
         const user = await userModel.create(u)
         return user

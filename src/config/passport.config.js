@@ -4,12 +4,13 @@ import GitHubStrategy from "passport-github2"
 import userModel from "../dao/models/userModel.js"
 import { createHash, isValidPassword } from "../utils.js";
 import UserManager from "../dao/services/userManager.js";
+import valores from "./env.config.js"
 
 const LocalStrategy = local.Strategy
 const userManager = new UserManager()
 const initializePassport = () => {
-    const emailAdmin = "adminCoder@coder.com"
-    const passwordAdmin = "adminCod3r123"
+    const emailAdmin = valores.adminUser
+    const passwordAdmin = valores.adminPassword
 
     passport.use("github", new GitHubStrategy(
         {

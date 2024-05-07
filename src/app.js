@@ -13,10 +13,11 @@ import MongoStore from "connect-mongo"
 import loginRouter from "./routes/loginRouter.js"
 import initializePassport from "./config/passport.config.js"
 import passport from "passport"
+import valores from "./config/env.config.js"
 
 const app = express()
-const port = 8080
-const mongoURL = 'mongodb://127.0.0.1:27017/ecommerce?retryWrites=true&w=majority'
+const port = valores.port
+const mongoURL = valores.mongo_url
 const messageManager = new MessageManager
 const cartManager = new CartManager()
 

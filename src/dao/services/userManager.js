@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import CartManager from "./cartManager.js";
 
 const cartManager = new CartManager()
+
 class UserManager {
     getUserByID = async (id) => {
         const user = await userModel.findById(id)
@@ -9,9 +10,14 @@ class UserManager {
     }
 
     createUser = async (u) => {
+        if(u.rol == "admin"){ 
+            u.cart = null
+            return await userModel.create(u)
+        }
         const cart = await cartManager.createCart()
-        u.cart = cart
+        u.cart = cart._id
         const user = await userModel.create(u)
+        console.log("user: " + user)
         return user
     }
 

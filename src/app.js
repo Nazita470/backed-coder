@@ -64,7 +64,6 @@ const server = app.listen(port, console.log("Corriendo en el puerto", port))
 const socketServer = new Server(server)
 
 socketServer.on("connection", socket => {
-    console.log("Conectado a socket")
 
     messageManager.getMessage()
     .then((data) =>{
@@ -78,9 +77,9 @@ socketServer.on("connection", socket => {
     })
 
     socket.on("addProducts", async data => {
-        console.log("cart: " + data.cart)
+        console.log("data:")
         await cartManager.addProducts(data.cart, data.id, data.quantity)
-        console.log("agregado")
+       // console.log("agregado")
     })
 })
 

@@ -3,8 +3,10 @@ import userModel from "../dao/models/userModel.js";
 import express from "express"
 import passport from "passport";
 import { passportCall } from "../config/passport.error.js";
+import UserDTO from "../dao/DTOs/user.dto.js";
 
 const loginRouter = new Router()
+const userDTO = new UserDTO()
 loginRouter.use(express.json())
 
 loginRouter.get("/github", passport.authenticate("github", {scope: ["user: email"]}), async (req, res) => {})
@@ -20,12 +22,8 @@ loginRouter.post("/register", passportCall("register") , async (req, res) => {
 
 loginRouter.post("/login", passportCall("login"), async (req, res) => {
     if(!req.user) return res.status(400).send({status: "error", message: "Invalid credentials"})
-    req.session.user = {
-        name: `${req.user.name} ${req.user.last_name}`,
-        age:req.user.age,
-        email: req.user.email,
-        cart_id: req.user.cart
-    }
+    console.log(req.user)
+    req.session.user = req.user
     res.send({status: "sucess", payload:req.user})
 })
 

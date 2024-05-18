@@ -1,7 +1,7 @@
 import { Router } from "express";
 import ProductsManager from "../dao/services/productManager.js";
 import CartManager from "../dao/services/cartManager.js";
-import { authLogin, notLogin } from "../middlewars.js";
+import { authLogin, notLogin, rolUser } from "../middlewars.js";
 const viewRouter = new Router()
 const cartManager = new CartManager()
 const productManager = new ProductsManager()
@@ -18,7 +18,7 @@ export function armarUrl(limit, query, sort){
     return result
 }
 
-viewRouter.get("/cart/:cid", (req, res) => {
+viewRouter.get("/cart/:cid", authLogin, (req, res) => {
     const { cid } = req.params
     cartManager.getCartByPopulate(cid)
     .then(result => {
@@ -29,11 +29,11 @@ viewRouter.get("/cart/:cid", (req, res) => {
     
 })
 
-viewRouter.get("/chat", async (req, res) => {
+viewRouter.get("/chat", authLogin,rolUser, async (req, res) => {
     res.render("chat")
 })
 
-viewRouter.get("/products", (req, res) => {
+viewRouter.get("/products", authLogin, (req, res) => {
     let page = req.query.page
     let limit = req.query.limit
     let lastquery = req.query.query
@@ -58,10 +58,14 @@ viewRouter.get("/products", (req, res) => {
          result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}${urlParams}` : null
          if(req.session.user) {
             result.hasUser = true
+            result.isUsuario = req.session.user.rol == "usuario"
+            result.isAdmin = req.session.user.rol == "admin"
             result.user = req.session.user
          } else {
             result.hasUser = false
          }
+
+         console.log(result)
          
     
          res.render("products", result)
@@ -78,7 +82,7 @@ viewRouter.get("/register", notLogin, (req, res) => {
     res.render("register")
 })
 
-viewRouter.get("/profile", authLogin, (req, res) => {
+viewRouter.get("/current", authLogin, (req, res) => {
     res.render("profile",{user: req.session.user} )
 })
 

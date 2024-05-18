@@ -7,6 +7,7 @@ class CartManager {
         const carts = await cartsModel.find({_id: id}).lean()
         return carts
     }
+
     getCartByPopulate = async id => {
         const carts = await cartsModel.find({_id: id}).populate("products.product").lean()
         return carts               
@@ -16,14 +17,11 @@ class CartManager {
         return cart
     }
     addProducts = async (cid, prodId, quantity) => {
-        console.log(prodId)
-        console.log(cid)
         try{
             const cart = await cartsModel.find({_id: cid})
+            const product = cart[0].products.find((p) =>p.product.toString() == prodId )
 
-            const product = cart[0].products.find((p) => p.product.toString() == prodId)
-
-            console.log("Prodcuto:",product)
+            console.log("Producto:",product)
             
             if(product) {
                 product.quantity += quantity
@@ -97,5 +95,7 @@ class CartManager {
 export class CartFyleManager {
     
 }
+
+
 
 export default CartManager

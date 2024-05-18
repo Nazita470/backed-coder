@@ -5,6 +5,7 @@ import userModel from "../dao/models/userModel.js"
 import { createHash, isValidPassword } from "../utils.js";
 import UserManager from "../dao/services/userManager.js";
 import valores from "./env.config.js"
+import { userRepositories } from "../repositories/index.js";
 
 const LocalStrategy = local.Strategy
 const userManager = new UserManager()
@@ -29,7 +30,8 @@ const initializePassport = () => {
                     last_name:"",
                     age: null,
                     email:profile._json.email,
-                    password: ""
+                    password: "",
+                    rol: "usuario"
                 }
 
                 let result = await userManager.createUser(newUser)
@@ -42,7 +44,6 @@ const initializePassport = () => {
         })
     )
 
-   // passport.use("register", new LocalStrategy())
     
    passport.use("register", new LocalStrategy(
         {passReqToCallback: true, usernameField: "email"},
@@ -78,10 +79,11 @@ const initializePassport = () => {
         {usernameField: "email"},
         async (username, password, done) => {
             try{
-                const user = await userManager.getByEmail(username)
+                const prevUser = await userManager.getByEmail(username)
     
-                if(!user) return done(null, false, {message: "User doesnt exist"})
-                if(!isValidPassword(user, password)) return done(null, false, {message: "Incorrect password"})
+                if(!prevUser) return done(null, false, {message: "User doesnt exist"})
+                if(!isValidPassword(prevUser, password)) return done(null, false, {message: "Incorrect password"})
+                let user = await userRepositories.getUser(username)
                 return done(null, user, {message: "Log in"})
             }catch(error) {
                 return done("Error al buscar el usuario: " + error)

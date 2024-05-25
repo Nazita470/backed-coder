@@ -5,8 +5,6 @@ import handlebars from "express-handlebars"
 import { __dirname } from "./utils.js"
 import { Server } from "socket.io"
 import mongoose from "mongoose"
-import MessageManager from "./dao/services/messagesManager.js"
-import CartManager from "./dao/services/cartManager.js"
 import viewRouter from "./routes/viewsRouter.js"
 import session from "express-session"
 import MongoStore from "connect-mongo"
@@ -14,12 +12,12 @@ import loginRouter from "./routes/loginRouter.js"
 import initializePassport from "./config/passport.config.js"
 import passport from "passport"
 import valores from "./config/env.config.js"
+import { cartRepositories } from "./repositories/index.js"
+import { messageRepositories } from "./repositories/index.js"
 
 const app = express()
 const port = valores.port
 const mongoURL = valores.mongo_url
-const messageManager = new MessageManager
-const cartManager = new CartManager()
 
 //Middlewares
 app.set('views', __dirname+'/views')
@@ -65,21 +63,20 @@ const socketServer = new Server(server)
 
 socketServer.on("connection", socket => {
 
-    messageManager.getMessage()
+    messageRepositories.getMessage()
     .then((data) =>{
          socket.emit("productosBase", data)
     })
 
     socket.on("message", async data => {
-        await messageManager.createMessage(data)
-        let mensajes = await messageManager.getMessage()
+        await messageRepositories.createMessage(data)
+        let mensajes = await messageRepositories.getMessage()
         socketServer.emit("messageLogs", mensajes)
     })
 
     socket.on("addProducts", async data => {
         console.log("data:")
-        await cartManager.addProducts(data.cart, data.id, data.quantity)
-       // console.log("agregado")
+        await cartRepositories.addProducts(data.cart, data.id, data.quantity)
     })
 })
 

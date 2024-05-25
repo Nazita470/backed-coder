@@ -1,10 +1,8 @@
 import { Router } from "express";
-import ProductsManager from "../dao/services/productManager.js";
-import CartManager from "../dao/services/cartManager.js";
 import { authLogin, notLogin, rolUser } from "../middlewars.js";
+import { cartRepositories } from "../repositories/index.js";
+import { productRepositories } from "../repositories/index.js";
 const viewRouter = new Router()
-const cartManager = new CartManager()
-const productManager = new ProductsManager()
 
 
 export function armarUrl(limit, query, sort){
@@ -20,7 +18,7 @@ export function armarUrl(limit, query, sort){
 
 viewRouter.get("/cart/:cid", authLogin, (req, res) => {
     const { cid } = req.params
-    cartManager.getCartByPopulate(cid)
+    cartRepositories.getCartByPopulate(cid)
     .then(result => {
         
          res.render("cart", {productos: result[0].products, id:result[0]._id})
@@ -51,7 +49,7 @@ viewRouter.get("/products", authLogin, (req, res) => {
         query: query,
         sort: sort
     }
-    productManager.getByPage(obj)
+    productRepositories.getByPage(obj)
     .then(result => {
          result.isValid = page >= 1 && page <= result.totalPages
          result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}${urlParams}`: null

@@ -1,7 +1,5 @@
 import userModel from "../models/userModel.js";
-import CartManager from "./cartManager.js";
-
-const cartManager = new CartManager()
+import { cartRepositories } from "../../repositories/index.js";
 
 class UserManager {
     getUserByID = async (id) => {
@@ -14,7 +12,7 @@ class UserManager {
             u.cart = null
             return await userModel.create(u)
         }
-        const cart = await cartManager.createCart()
+        const cart = await cartRepositories.createCart()
         u.cart = cart._id
         const user = await userModel.create(u)
         console.log("user: " + user)

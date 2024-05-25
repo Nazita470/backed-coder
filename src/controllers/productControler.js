@@ -1,6 +1,6 @@
-import ProductsManager from "../dao/services/productManager.js";
-const productsManager = new ProductsManager()
 import { armarUrl } from "../routes/viewsRouter.js";
+import { productRepositories } from "../repositories/index.js";
+
 class ProductController {
     getProducts = async (req, res) =>{
         let page = req.query.page
@@ -19,7 +19,7 @@ class ProductController {
             query: query,
             sort: sort
         }
-            const result = await productsManager.getByPage(obj)
+            const result = await productRepositories.getByPage(obj)
             result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}${urlParams}`: null
             result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}${urlParams}` : null
             res.send(result)
@@ -27,8 +27,8 @@ class ProductController {
 
     getById = async (req, res) => {
         const id = req.params.pid
-        const product = await productsManager.getById(id)
-        if(!product) res.status(303).send({status: "error", message: "User not found"})
+        const product = await productRepositories.getById(id)
+        if(!product) res.status(303).send({status: "error", message: "Product not found"})
         res.send(product)
                 
     }
@@ -42,7 +42,7 @@ class ProductController {
         ...status
         }
 
-        const result = await productsManager.addProducts(newProducts)
+        const result = await productRepositories.addProducts(newProducts)
         if(result.status == 0) {
              res.send({status: "error", message: result.payload})
         }else {
@@ -53,17 +53,19 @@ class ProductController {
     updateProduct = async (req, res) => {
         const id  = req.params.pid
         const change = req.body
-        productsManager.updateProducts(id, change)
+        productRepositories.updateProducts(id, change)
         res.send({status: "sucess", message: `user ${id} updated`})
     }
 
     deleteProduct = async (req, res) => {
         const id = req.params.pid
     
-        const resultado = await productsManager.deleteProducts(id)
+        const resultado = await productRepositories.deleteProducts(id)
         res.send({status: "sucess", message: `user ${id} deleted`})
     }
     
 }
 
 export default ProductController
+
+//api/products/65f5e3ad560c647b56f2b41e

@@ -1,14 +1,11 @@
 import passport from "passport";
 import local from "passport-local"
 import GitHubStrategy from "passport-github2"
-import userModel from "../dao/models/userModel.js"
 import { createHash, isValidPassword } from "../utils.js";
-import UserManager from "../dao/services/userManager.js";
 import valores from "./env.config.js"
 import { userRepositories } from "../repositories/index.js";
 
 const LocalStrategy = local.Strategy
-const userManager = new UserManager()
 const initializePassport = () => {
     const emailAdmin = valores.adminUser
     const passwordAdmin = valores.adminPassword
@@ -22,7 +19,7 @@ const initializePassport = () => {
         }
         , async (accessToken, refreshToken,profile, done) => {
            try{
-                let user = await userManager.getByEmail(profile._json.email)
+                let user = await userRepositories.getByEmail(profile._json.email)
                 if(user) { console.log("usuario ya existente"); return done(null, user, {message: "El usuario ya exixte"}) }// El usuario ya existe
                 
                 let newUser = {
@@ -34,7 +31,7 @@ const initializePassport = () => {
                     rol: "usuario"
                 }
 
-                let result = await userManager.createUser(newUser)
+                let result = await userRepositories.createUser(newUser)
                 done(null, result, {message: "Usuario logeado correctamente"})
                 
             } catch (error) {
@@ -54,7 +51,7 @@ const initializePassport = () => {
                 rol = "admin"
             }
             try {
-                let user = await userManager.getByEmail(username)
+                let user = await userRepositories.getByEmail(username)
                 if(user) return done(null, false, {message: "Usuario ya existente"})
                 const newUser = {
                         name, 
@@ -66,7 +63,7 @@ const initializePassport = () => {
                     
                 }
 
-                let result = await userManager.createUser(newUser)
+                let result = await userRepositories.createUser(newUser)
                 return done(null, result)
             }catch(error) {
                 return done("Error al obtener el usuario: " + error)
@@ -79,11 +76,11 @@ const initializePassport = () => {
         {usernameField: "email"},
         async (username, password, done) => {
             try{
-                const prevUser = await userManager.getByEmail(username)
+                const prevUser = await userRepositories.getByEmail(username)
     
                 if(!prevUser) return done(null, false, {message: "User doesnt exist"})
                 if(!isValidPassword(prevUser, password)) return done(null, false, {message: "Incorrect password"})
-                let user = await userRepositories.getUser(username)
+                let user = await userRepositories.getUserToFront(username)
                 return done(null, user, {message: "Log in"})
             }catch(error) {
                 return done("Error al buscar el usuario: " + error)
@@ -96,7 +93,7 @@ const initializePassport = () => {
     })
 
     passport.deserializeUser(async (id, done) => {
-        let user = await userModel.findById(id)
+        let user = await userRepositories.getUserByID(id)
         done(null, user)
     })
 }

@@ -1,4 +1,3 @@
-import { error } from "console"
 import cartsModel from "../models/cartM.js"
 
 class CartManager {
@@ -12,11 +11,16 @@ class CartManager {
         const carts = await cartsModel.find({_id: id}).populate("products.product").lean()
         return carts               
     }
+    
     createCart = async () => {
         const cart = await cartsModel.create({})
         return cart
     }
+
     addProducts = async (cid, prodId, quantity) => {
+        console.log(
+            `cid: ${cid}, prodId: ${prodId}, quantity: ${quantity}`
+        )
         try{
             const cart = await cartsModel.find({_id: cid})
             const product = cart[0].products.find((p) =>p.product.toString() == prodId )

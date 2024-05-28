@@ -12,7 +12,7 @@ products_router.get("/", productController.getProducts)
 
 products_router.get("/:pid", productController.getById)
 
-products_router.post("/", authLogin, isAdmin, productController.createProduct)
+products_router.post("/", productController.createProduct)
 
 products_router.put("/:pid",authLogin, isAdmin, productController.updateProduct)
 

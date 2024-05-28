@@ -14,7 +14,8 @@ import passport from "passport"
 import valores from "./config/env.config.js"
 import { cartRepositories } from "./repositories/index.js"
 import { messageRepositories } from "./repositories/index.js"
-
+import { errorsHandler } from "./middlewars.js"
+import { generateProduct } from "./utils.js"
 const app = express()
 const port = valores.port
 const mongoURL = valores.mongo_url
@@ -40,6 +41,16 @@ app.use("/api/products", products_router)
 app.use("/api/carts", cart_router)
 app.use("/api/session", loginRouter)
 app.use("/", viewRouter)
+app.get("/mockingproducts", (req, res) => {
+    const products = []
+    for(let i = 0; i < 100; i++) {
+        products.push(generateProduct())
+    }
+    res.send(products)
+})
+
+//Error
+app.use(errorsHandler)
 
 //Passport
 initializePassport()
@@ -54,6 +65,7 @@ const connectMongoDB = async () => {
         process.exit()
     }
 }
+
 
 connectMongoDB()
 

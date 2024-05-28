@@ -1,7 +1,9 @@
 import productsModel from "../models/productsM.js";
 import { validarProducto } from "../../utils.js";
 import { leerArchivo } from "../../utils.js";
-
+import CostumError from "../../utils/errors/customError.js";
+import ERROR_TYPES from "../../utils/errors/enums.js";
+import { generateProductErrorInfo } from "../../utils/errors/info.js";
 class ProductsManager {
     getAll = async (limit) => {
         let products
@@ -47,13 +49,9 @@ class ProductsManager {
 
     addProducts = async (prod) => {
         console.log(prod)
-        if(validarProducto(prod)){
-             const p = await productsModel.create(prod)
-             return {status: 1, payload: p}
-        }else {
-            console.log("Usuario incompleto")
-            return {status: 0, payload: "Usuario incompleto"}
-        }
+        const p = await productsModel.create(prod)
+        return {status: 1, payload: p}
+       
     }
 
     updateProducts = async (id, prod) => {

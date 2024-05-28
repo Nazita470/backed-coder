@@ -1,28 +1,70 @@
 import { cartRepositories } from "../repositories/index.js";
+import CostumError from "../utils/errors/customError.js";
+import ERROR_TYPES from "../utils/errors/enums.js";
 class CartController{
     createCart = async (req, res) => {
+       
         const cart = await cartRepositories.createCart()
         res.send({status: "sucess", payload: cart})
     }
-    getByIdPopulate = async (req, res) => {
+
+    getByIdPopulate = async (req, res, next) => {
         const id = req.params.cid
-        console.log("Desde controller" + id)
-        const cart = await cartRepositories.getCartByPopulate(id)
-        res.send(cart)
+
+        try {
+            const cart = await cartRepositories.getCartByPopulate(id)
+            if(!cart) {
+                throw CostumError.createError({
+                    name: "Cart nout found",
+                    cause: "Cart id is invalid",
+                    message: "Error searching cart",
+                    code: ERROR_TYPES.ERROR_DATA
+                })
+                //res.status(400).send({status: "error", message: "Cart not found"})
+            }
+            res.send(cart)
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+       
+        
+       
+        
+       
     }
 
-    addCartProduct = async (req, res) => {
+    addCartProduct = async (req, res, next) => {
         const id = req.params.cid
         const productId = req.params.pid
 
-        const result = await cartRepositories.addProducts(id, productId, 1)
-        res.send({status: "sucesss", payload: result})
+        try {
+            const result = await cartRepositories.addProducts(id, productId, 1)
+            console.log("Entro al custom")
+            if(result?.error) {
+                throw CostumError.createError({
+                    name: "Cart not found",
+                    cause: "Invalid id",
+                    message: "Error searching for cart",
+                    code: ERROR_TYPES.ERROR_DATA
+                })
+            }
+                  res.send({status: "sucesss", payload: result})
+            
+               
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+       
+        
     }
 
     deleteCartProduct = async (req, res) => {
         const cid = req.params.cid
         const pid = req.params.pid
     
+
         const result = await cartRepositories.deleteProduct(cid, pid)
         if(!result) return res.send({status: "error", message: "product not exists"}) 
         return res.send({status: "sucess", message: "product eliminated"})

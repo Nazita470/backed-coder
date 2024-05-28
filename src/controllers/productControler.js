@@ -1,8 +1,12 @@
 import { armarUrl } from "../routes/viewsRouter.js";
 import { productRepositories } from "../repositories/index.js";
-
+import { validarProducto } from "../utils.js";
+import CostumError from "../utils/errors/customError.js";
+import ERROR_TYPES from "../utils/errors/enums.js";
+import { generateProductErrorInfo } from "../utils/errors/info.js";
 class ProductController {
     getProducts = async (req, res) =>{
+        
         let page = req.query.page
         let limit = req.query.limit
         let lastquery = req.query.query
@@ -25,15 +29,45 @@ class ProductController {
             res.send(result)
     }
 
-    getById = async (req, res) => {
-        const id = req.params.pid
-        const product = await productRepositories.getById(id)
-        if(!product) res.status(303).send({status: "error", message: "Product not found"})
-        res.send(product)
+    getById =  async (req, res, next) => {
+        try {
+            const id = req.params.pid
+            const product = await productRepositories.getById(id)
+            if(!product) {
+                 throw CostumError.createError({
+                    name: "Product not exists",
+                    cause: "Poduct id doesnt exist",
+                    message: "Error creating Product",
+                    code: ERROR_TYPES.ERROR_DATA
+                })
+            }
+
+            res.send(product)
+        } catch (error) {
+            console.log(error)
+            next(error)
+        }
+        
+   /*     try {
+           
+            
+            .then(product => {
+                if(!product) { 
+                    throw new Error("There is an error")
+                    //res.status(303).send({status: "error", message: "Product not found"})
+                }
+                res.send(product)
+            })
+        } catch (error) {
+            next(error)
+        }*/
+      
+        
                 
     }
         
-    createProduct = async (req, res) => {
+    createProduct = (req, res) => {
+      
         const dataProduct = req.body 
         const status = {status: true}
         if(req.body?.status == false) status.status = false
@@ -41,13 +75,18 @@ class ProductController {
         ...dataProduct,
         ...status
         }
-
-        const result = await productRepositories.addProducts(newProducts)
-        if(result.status == 0) {
-             res.send({status: "error", message: result.payload})
-        }else {
-            res.send({status: "success", message: "Product created"})
+        if(!validarProducto(newProducts)) {
+            throw CostumError.createError({
+                name: "Invalid product",
+                cause: generateProductErrorInfo(newProducts),
+                message: "Error creating Product",
+                code: ERROR_TYPES.ERROR_DATA
+            })
         }
+
+        productRepositories.addProducts(newProducts).then(
+            res.send({status: "sucess", message: "Product created"})
+        )
     } 
 
     updateProduct = async (req, res) => {
@@ -67,5 +106,3 @@ class ProductController {
 }
 
 export default ProductController
-
-//api/products/65f5e3ad560c647b56f2b41e

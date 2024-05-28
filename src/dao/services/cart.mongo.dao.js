@@ -3,12 +3,24 @@ import cartsModel from "../models/cartM.js"
 class CartManager {
 
     getCartById = async (id) => {
-        const carts = await cartsModel.find({_id: id}).lean()
+        let carts
+        try {
+            carts = await cartsModel.find({_id: id}).lean()
+            
+        } catch (error) {
+        }
+        console.log(carts)
         return carts
     }
 
     getCartByPopulate = async id => {
-        const carts = await cartsModel.find({_id: id}).populate("products.product").lean()
+        let carts
+        try {
+            carts = await cartsModel.find({_id: id}).populate("products.product").lean()
+            
+        } catch (error) {
+             carts = null
+        }
         return carts               
     }
     
@@ -18,11 +30,12 @@ class CartManager {
     }
 
     addProducts = async (cid, prodId, quantity) => {
-        console.log(
-            `cid: ${cid}, prodId: ${prodId}, quantity: ${quantity}`
-        )
         try{
-            const cart = await cartsModel.find({_id: cid})
+            const cart = await this.getCartById(cid)
+            if(!cart) {
+                console.log("Entro")
+                return {error: "Cart not found"}
+            }
             const product = cart[0].products.find((p) =>p.product.toString() == prodId )
 
             console.log("Producto:",product)
@@ -36,7 +49,6 @@ class CartManager {
 
             return await cart[0].save()
         }catch(e) {
-            console.error(e)
         }
        
     }

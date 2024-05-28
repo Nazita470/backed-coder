@@ -2,7 +2,9 @@ import fs from "fs"
 import {fileURLToPath} from "url"
 import bcrypt from "bcrypt"
 import { dirname } from "path"
+import { Faker, es } from "@faker-js/faker"
 
+const customFaker = new Faker({locale: [es]})
 export async function leerArchivo(path){
     let products
     try{
@@ -31,6 +33,31 @@ export function createHash(password) {
 
 export function isValidPassword(user, password) {
     return bcrypt.compareSync(password, user.password)
+}
+
+
+function getRandom(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+
+export function generateProduct(){
+    const limite = getRandom(1, 3)
+    const thumbnail = []
+    for(let i = 0; i <= limite; i++) {
+        thumbnail.push(customFaker.image.url())
+    }
+    return {
+        id: customFaker.database.mongodbObjectId(),
+        title: customFaker.commerce.productName(),
+        description: customFaker.commerce.productAdjective(),
+        code: customFaker.commerce.isbn(),
+        price: customFaker.commerce.price(),
+        stock: customFaker.string.numeric(),
+        category: customFaker.commerce.department(),
+        status: true,
+        thumbnail: thumbnail
+    }
 }
 
 const __filename = fileURLToPath(import.meta.url)

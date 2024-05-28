@@ -2,6 +2,9 @@ import { Router } from "express";
 import { authLogin, notLogin, rolUser } from "../middlewars.js";
 import { cartRepositories } from "../repositories/index.js";
 import { productRepositories } from "../repositories/index.js";
+import CostumError from "../utils/errors/customError.js";
+import ERROR_TYPES
+ from "../utils/errors/enums.js";
 const viewRouter = new Router()
 
 
@@ -16,22 +19,34 @@ export function armarUrl(limit, query, sort){
     return result
 }
 
-viewRouter.get("/cart/:cid", authLogin, (req, res) => {
+viewRouter.get("/cart/:cid", async (req, res) => {
     const { cid } = req.params
-    cartRepositories.getCartByPopulate(cid)
-    .then(result => {
-        
-         res.render("cart", {productos: result[0].products, id:result[0]._id})
-    })
+    try {
+        const cart = await cartRepositories.getCartByPopulate(cid)
+        if(!cart) {
+            throw CostumError.createError({
+                name: "Cart nout found",
+                cause: "Invalid id",
+                message: "Error searching for cart",
+                code: ERROR_TYPES.ERROR_DATA
+            })
+        }
+        res.render("cart", {productos: cart[0].products, id:cart[0]._id})
+    } catch (error) {
+        console.error(error)
+    }
+   
+    
     
     
 })
 
-viewRouter.get("/chat", authLogin,rolUser, async (req, res) => {
+viewRouter.get("/chat", authLogin,rolUser, (req, res) => {
     res.render("chat")
 })
 
 viewRouter.get("/products", authLogin, (req, res) => {
+    
     let page = req.query.page
     let limit = req.query.limit
     let lastquery = req.query.query
@@ -64,7 +79,6 @@ viewRouter.get("/products", authLogin, (req, res) => {
          }
 
          console.log(result)
-         
     
          res.render("products", result)
     })
@@ -73,6 +87,7 @@ viewRouter.get("/products", authLogin, (req, res) => {
 })
 
 viewRouter.get("/login", notLogin ,(req, res) => {
+ 
     res.render("login")
 })
 

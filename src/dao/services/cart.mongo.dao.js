@@ -9,7 +9,7 @@ class CartManager {
             
         } catch (error) {
         }
-        console.log(carts)
+        req.logger.info(carts)
         return carts
     }
 
@@ -33,12 +33,11 @@ class CartManager {
         try{
             const cart = await this.getCartById(cid)
             if(!cart) {
-                console.log("Entro")
+                req.logger.error("Cart nout found")
                 return {error: "Cart not found"}
             }
             const product = cart[0].products.find((p) =>p.product.toString() == prodId )
 
-            console.log("Producto:",product)
             
             if(product) {
                 product.quantity += quantity
@@ -57,16 +56,15 @@ class CartManager {
         try{
             const cart = await cartsModel.find({_id: cid})
             const product = cart[0].products.find((p) => p.product.toString() == pid)
-            console.log(product)
             if(product) {
                 cart[0].products.splice(product, 1)
                 return await cart[0].save()
             }else {
-                console.log("producto no encontrado")
+                req.logger.error("producto no encontrado")
                 return false
             }
         }catch(error) {
-            console.error(error)
+            req.logger.fatal(error)
         }
 
     }
@@ -75,16 +73,14 @@ class CartManager {
         try{
          await cartsModel.updateOne({"_id": cid}, {$set: {products: cart}})
         }catch(e) {
-            console.error(e)
+            req.logger.error(e)
         }
     }
 
     updateProductQuantity = async (cid, pid, q) =>{
         try{
             const cart = await cartsModel.find({_id: cid})
-            console.log("Carrito", cart[0])
             const product = cart[0].products.find((p) => p.product.toString() == pid) 
-            //console.log(product)
 
             if(product) {
                 product.quantity = q
@@ -92,17 +88,15 @@ class CartManager {
                 return false
             }
 
-            console.log(cart[0])
 
             return await cart[0].save()
 
         }catch(error) {
-            console.error(error)
+            req.logger.error(error)
         }
     }
 
     deleteProductsCarts = async (cid) => {
-        console.log("hola")
         await cartsModel.updateOne({"_id": cid}, {$set: { products : []}})
     }
 

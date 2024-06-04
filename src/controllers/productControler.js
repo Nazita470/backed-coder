@@ -44,7 +44,7 @@ class ProductController {
 
             res.send(product)
         } catch (error) {
-            console.log(error)
+            req.logger.error(error)
             next(error)
         }
         

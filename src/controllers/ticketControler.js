@@ -22,15 +22,13 @@ class TicketController {
         carrito[0].products.forEach((product) => {
             if(product.product.stock >= product.quantity) {
                 let q = product.product.stock - product.quantity
-                console.log("quantity: " + q)
                 productRepositories.updateProducts(product.product._id, {stock: q})
             }else {
                 newCarrito = carrito[0].products.filter((p) =>  p.product._id != product.product._id)
                 sacadosDelCarrito.push(product)
             }
         })
-       console.log("Nuevo Carrito")
-       console.log(newCarrito)
+        req.logger.info(newCarrito)
         await cartRepositories.updateCart(cid, sacadosDelCarrito)
         const ticket = {
             code: uuidv4(),

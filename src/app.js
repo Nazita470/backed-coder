@@ -16,6 +16,7 @@ import { cartRepositories } from "./repositories/index.js"
 import { messageRepositories } from "./repositories/index.js"
 import { errorsHandler } from "./middlewars.js"
 import { generateProduct } from "./utils.js"
+import { addLogger } from "./utils/logger/logger.js"
 const app = express()
 const port = valores.port
 const mongoURL = valores.mongo_url
@@ -35,8 +36,19 @@ app.use(session({
 }))
 app.use(express.static(__dirname+'/public'))
 app.engine('handlebars', handlebars.engine())
+app.use(addLogger)
 
 //routes
+
+app.get("/loggerTest", (req, res) => {
+    req.logger.debug("Alerta")
+    req.logger.http("Alerta")
+    req.logger.info("Alerta")
+    req.logger.warning("Alerta")
+    req.logger.error("Alerta")
+    req.logger.fatal("Alerta")
+    res.send({message: "Prueba logger"})
+})
 app.use("/api/products", products_router)
 app.use("/api/carts", cart_router)
 app.use("/api/session", loginRouter)

@@ -33,7 +33,7 @@ viewRouter.get("/cart/:cid", async (req, res) => {
         }
         res.render("cart", {productos: cart[0].products, id:cart[0]._id})
     } catch (error) {
-        console.error(error)
+        req.logger.error(error)
     }
    
     
@@ -78,7 +78,6 @@ viewRouter.get("/products", authLogin, (req, res) => {
             result.hasUser = false
          }
 
-         console.log(result)
     
          res.render("products", result)
     })

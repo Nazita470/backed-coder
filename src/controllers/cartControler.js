@@ -20,11 +20,10 @@ class CartController{
                     message: "Error searching cart",
                     code: ERROR_TYPES.ERROR_DATA
                 })
-                //res.status(400).send({status: "error", message: "Cart not found"})
             }
             res.send(cart)
         } catch (error) {
-            console.log(error)
+            req.logger.error(error)
             next(error)
         }
        
@@ -40,7 +39,6 @@ class CartController{
 
         try {
             const result = await cartRepositories.addProducts(id, productId, 1)
-            console.log("Entro al custom")
             if(result?.error) {
                 throw CostumError.createError({
                     name: "Cart not found",
@@ -53,7 +51,7 @@ class CartController{
             
                
         } catch (error) {
-            console.log(error)
+            req.logger.error(error)
             next(error)
         }
        

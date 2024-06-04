@@ -1,15 +1,15 @@
 
 export function authLogin(req, res, next) {
     if(!req.session || !req.session.user) {
+        req.logger.error("No autorizado")
+
          return res.send("Not authorized, you have to login")
     }
-    console.log(req.session.user)
     next()
 }
 
 export function notLogin(req, res, next) {
     if(req.session.user) {
-        console.log(req.session.user)
         return res.redirect("/current")
    }
 
@@ -40,11 +40,9 @@ export function isCart(req, res, next){
 }
 
 export function errorsHandler(error, req, res, next) {
-    console.log(error)
     if(error) {
-        console.log("Entro")
         if(error.code) {
-            console.log(`${error.name}: ${error.cause}`)
+            req.logger.error(`${error.name}: ${error.cause}`)
            return res.status(error.code).send({status: "error", message: error.message})
        }else {
             res.status(500).send({status: "error", error: "Unhandled error"})

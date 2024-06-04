@@ -15,7 +15,7 @@ class UserManager {
         const cart = await cartRepositories.createCart()
         u.cart = cart._id
         const user = await userModel.create(u)
-        console.log("user: " + user)
+        req.logger.info("user: " + user)
         return user
     }
 

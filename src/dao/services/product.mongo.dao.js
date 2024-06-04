@@ -18,7 +18,6 @@ class ProductsManager {
 
     getByPage = async (objeto) => {
         const {page, query, limit, sort} = objeto
-        console.log("sort", sort)
         let newSort 
         if(sort) {
             if(sort == "asc"){
@@ -32,7 +31,6 @@ class ProductsManager {
             newSort = {}
         }
 
-        console.log(newSort)
         
         let products = await productsModel.paginate(query, {page, limit:limit, lean: true , sort: newSort})
         return products
@@ -48,19 +46,18 @@ class ProductsManager {
     }
 
     addProducts = async (prod) => {
-        console.log(prod)
+        req.logger.info(prod)
         const p = await productsModel.create(prod)
         return {status: 1, payload: p}
        
     }
 
     updateProducts = async (id, prod) => {
-        console.log(id)
         try {
          const p = await productsModel.updateOne({_id: id}, {$set: prod})
          return p 
         }catch(error) {
-            console.error(error)
+            req.logger.error(error)
         }
     }
 

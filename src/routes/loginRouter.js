@@ -21,7 +21,7 @@ loginRouter.post("/register", passportCall("register") , async (req, res) => {
 
 loginRouter.post("/login", passportCall("login"), async (req, res) => {
     if(!req.user) return res.status(400).send({status: "error", message: "Invalid credentials"})
-    console.log(req.user)
+    req.logger.info(req.user)
     req.session.user = req.user
     res.send({status: "sucess", payload:req.user})
 })

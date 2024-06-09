@@ -11,7 +11,10 @@ const userSchema = new Schema({
         ref: "carts"
     },
     password: String,
-    rol: "String",
+    rol: {
+       type: "String",
+       enum: ["usuario", "admin", "premium"]
+    },
 })
 
 const userModel = mongoose.model("users", userSchema)

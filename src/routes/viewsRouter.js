@@ -19,6 +19,7 @@ export function armarUrl(limit, query, sort){
     return result
 }
 
+
 viewRouter.get("/cart/:cid", async (req, res) => {
     const { cid } = req.params
     try {
@@ -71,14 +72,14 @@ viewRouter.get("/products", authLogin, (req, res) => {
          result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}${urlParams}` : null
          if(req.session.user) {
             result.hasUser = true
-            result.isUsuario = req.session.user.rol == "usuario"
+            result.isUsuario = req.session.user.rol == "usuario" || req.session.user.rol == "premium"
             result.isAdmin = req.session.user.rol == "admin"
             result.user = req.session.user
          } else {
             result.hasUser = false
          }
 
-    
+         console.log(result)
          res.render("products", result)
     })
     
@@ -99,8 +100,6 @@ viewRouter.get("/current", authLogin, (req, res) => {
 })
 
 viewRouter.get("/register/correct", (req, res) => {
-    
-
     let error = req.query.error || false
     let message = req.query.message
     if(!message) message = "Error en el registro"
@@ -112,4 +111,14 @@ viewRouter.get("/login/error", (req, res) =>{
     if(!message) message = "Error en el login"
     res.render("badLogin", {msj: message})
 })
+
+
+viewRouter.get("/restore/password", authLogin,  (req, res) => {
+    if(req.cookies?.email) {
+       return res.render("restorePassword")
+    }
+
+    res.render("restorePasswordTime")
+})
+
 export default viewRouter

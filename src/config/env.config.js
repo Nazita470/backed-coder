@@ -13,5 +13,9 @@ export default {
     port: process.env.PORT,
     mongo_url: process.env.MONGO_URL,
     adminUser: process.env.ADMIN_USER,
-    adminPassword: process.env.ADMIN_PASSWORD
+    adminPassword: process.env.ADMIN_PASSWORD,
+    email: process.env.EMAIL,
+    email_password: process.env.EMAIL_PASSWORD,
+    email_host: process.env.EMAIL_HOST,
+    email_service: process.env.EMAIL_SERVICE
 }

@@ -27,8 +27,13 @@ export  class ProductRepositories {
     }
 
     addProducts = async (p) => {
-        let newProduct = new ProductDTO(p)
-        let result = await this.dao.addProducts(newProduct)
-        return result
+        try {
+            let newProduct = new ProductDTO(p)
+            let result = await this.dao.addProducts(newProduct)
+            return result
+        } catch (error) {
+            return error
+        }
+       
     }
 }

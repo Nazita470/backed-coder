@@ -2,13 +2,16 @@
     {{#if hasUser}}
         <h1>Bienvenido {{user.name}}</h1>
 
-        <div>Email: {{user.email}}</div>
+        <div email={{user.email}} id="email">Email: {{user.email}}</div>
         <div>Edad: {{user.age}}</div>
         <div>Rol: {{user.rol}}</div>
         <div id="cartId" cartID={{user.cart}}>CartId: {{user.cart}}</div>
         {{#if isUsuario}}
             <button name={{user.cart}} id="logoutButton">Logout</button>
         {{/if}}
+        <div id="divReset">
+            <button id="reset">Reset password</button>
+        </div>
         {{#if isAdmin}}
             <button name="nada" id="logoutButton">Logout</button>
         {{/if}}
@@ -31,6 +34,7 @@
                     <p>Category: {{this.category}}</p>
                     <p>Status: {{this.status}}</p>
                     <p>Thumbnal: {{this.thumbnal}}</p>
+                    <p>Owner: {{this.owner}}</p>
                 </form>
                 <hr>
             {{/each}}

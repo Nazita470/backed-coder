@@ -1,4 +1,4 @@
-import { cartRepositories } from "../repositories/index.js";
+import { cartRepositories, productRepositories } from "../repositories/index.js";
 import CostumError from "../utils/errors/customError.js";
 import ERROR_TYPES from "../utils/errors/enums.js";
 class CartController{
@@ -38,8 +38,21 @@ class CartController{
         const productId = req.params.pid
 
         try {
-            const result = await cartRepositories.addProducts(id, productId, 1)
-            if(result?.error) {
+            const product = await productRepositories.getById(productId)
+            if(product.length == 0) {
+                req.logger.error("Product doesnt exist")
+                 return res.send({status: "error", message: "Product doesnt found"})
+            }
+            const productOwner = product[0].owner
+            if(req.session.user.rol == "premium") {
+                if(req.session.user.email == productOwner) {
+
+                    req.logger.error("Its premium")
+                    return res.send({status: "error", message: "If you are premium, you can only add your own product"})
+                }
+            }
+           const result = await cartRepositories.addProducts(id, productId, 1)
+           if(result?.error) {
                 throw CostumError.createError({
                     name: "Cart not found",
                     cause: "Invalid id",
@@ -47,7 +60,7 @@ class CartController{
                     code: ERROR_TYPES.ERROR_DATA
                 })
             }
-                  res.send({status: "sucesss", payload: result})
+            res.send({status: "sucess", payload: result})
             
                
         } catch (error) {
@@ -70,10 +83,15 @@ class CartController{
     
 
     updateCartProduct = async (req, res) => {
-        const {cid, pid} = req.params
-        const q = req.body.quantity
-        cartRepositories.updateProductQuantity(cid, pid, q)
-        res.send({status: "sucess", message: "Product modified"})
+        try {
+            const {cid, pid} = req.params
+            const q = req.body.quantity
+            cartRepositories.updateProductQuantity(cid, pid, q)
+            res.send({status: "sucess", message: "Product modified"})
+        } catch (error) {
+            ConsolE.log("Error en update")
+        }
+        
     }
 
     updateCart = async (req, res) => {

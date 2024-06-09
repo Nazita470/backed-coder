@@ -26,8 +26,8 @@ export default class UserRepositories {
         return result
     }
 
-    updateUser = async (id, user) => {
-        const result = await this.dao.updateUser(user, id)
+    updateUser = async (email, user) => {
+        const result = await this.dao.updateUser(email, user)
         return result
     }
 

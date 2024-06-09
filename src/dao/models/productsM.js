@@ -31,10 +31,15 @@ const schema = new Schema({
         type: Boolean,
         require: true
     },   
+    owner: {
+        type: String,
+        require: true
+    },
     thumbnal: {
         type: [String],
         require: true
     }
+   
 })
 schema.plugin(mongoosePaginate)
 

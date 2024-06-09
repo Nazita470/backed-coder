@@ -46,7 +46,7 @@ class ProductsManager {
     }
 
     addProducts = async (prod) => {
-        req.logger.info(prod)
+        console.log("PROD", prod)
         const p = await productsModel.create(prod)
         return {status: 1, payload: p}
        
@@ -57,7 +57,7 @@ class ProductsManager {
          const p = await productsModel.updateOne({_id: id}, {$set: prod})
          return p 
         }catch(error) {
-            req.logger.error(error)
+            console.log(error)
         }
     }
 

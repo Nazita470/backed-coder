@@ -2,10 +2,11 @@ import { Router } from "express";
 import express from "express"
 import passport from "passport";
 import { passportCall } from "../config/passport.error.js";
-import UserDTO from "../dao/DTOs/user.dto.js";
+import UserController from "../controllers/userControler.js";
 
 const loginRouter = new Router()
-const userDTO = new UserDTO()
+const userControler = new UserController()
+
 loginRouter.use(express.json())
 
 loginRouter.get("/github", passport.authenticate("github", {scope: ["user: email"]}), async (req, res) => {})
@@ -31,12 +32,13 @@ loginRouter.get("/faillogin", (req, res) => {
     res.send({status: "error", message: "Passaport error"})
 })
 
-
 loginRouter.post("/logout", (req, res) => {
     req.session.destroy(err => {
         if(!err) res.send({status: "sucess", message: "Logout ok!"})
         else res.send({status: "error", body: err})
     })
 })
+
+loginRouter.post("/restore/password", userControler.changePassword)
 
 export default loginRouter

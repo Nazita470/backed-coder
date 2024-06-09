@@ -9,7 +9,7 @@ class CartManager {
             
         } catch (error) {
         }
-        req.logger.info(carts)
+        
         return carts
     }
 
@@ -31,14 +31,17 @@ class CartManager {
 
     addProducts = async (cid, prodId, quantity) => {
         try{
-            const cart = await this.getCartById(cid)
+            console.log("quantity", quantity)
+            const cart = await cartsModel.find({_id: cid})
+
             if(!cart) {
-                req.logger.error("Cart nout found")
+                console.log("cart nout found")
                 return {error: "Cart not found"}
             }
+
             const product = cart[0].products.find((p) =>p.product.toString() == prodId )
 
-            
+            console.log(product)
             if(product) {
                 product.quantity += quantity
             }else {
@@ -48,6 +51,7 @@ class CartManager {
 
             return await cart[0].save()
         }catch(e) {
+            console.log(e)
         }
        
     }
@@ -60,11 +64,11 @@ class CartManager {
                 cart[0].products.splice(product, 1)
                 return await cart[0].save()
             }else {
-                req.logger.error("producto no encontrado")
+                console.log("producto no encontrado")
                 return false
             }
         }catch(error) {
-            req.logger.fatal(error)
+            console.log(error)
         }
 
     }
@@ -73,7 +77,7 @@ class CartManager {
         try{
          await cartsModel.updateOne({"_id": cid}, {$set: {products: cart}})
         }catch(e) {
-            req.logger.error(e)
+            console.log(e)
         }
     }
 
@@ -91,8 +95,8 @@ class CartManager {
 
             return await cart[0].save()
 
-        }catch(error) {
-            req.logger.error(error)
+        } catch(error) {
+            console.log(error)        
         }
     }
 

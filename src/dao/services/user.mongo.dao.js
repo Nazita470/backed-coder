@@ -15,7 +15,6 @@ class UserManager {
         const cart = await cartRepositories.createCart()
         u.cart = cart._id
         const user = await userModel.create(u)
-        req.logger.info("user: " + user)
         return user
     }
 
@@ -29,8 +28,8 @@ class UserManager {
         return user
     }
 
-    updateUser = async (id, user) => {
-        const result = await userModel.updateOne({_id: id}, {$set: user})
+    updateUser = async (email, user) => {
+        const result = await userModel.updateOne({email: email}, {$set: user})
         return result
     }
 

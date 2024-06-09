@@ -17,10 +17,13 @@ import { messageRepositories } from "./repositories/index.js"
 import { errorsHandler } from "./middlewars.js"
 import { generateProduct } from "./utils.js"
 import { addLogger } from "./utils/logger/logger.js"
+import MailManager from "./utils/mail/mailManager.js"
+import { createHash } from "./utils.js"
+import cookieParser from "cookie-parser"
+import userRouter from "./routes/userRouter.js"
 const app = express()
 const port = valores.port
 const mongoURL = valores.mongo_url
-
 //Middlewares
 app.set('views', __dirname+'/views')
 app.set('view engine', 'handlebars')
@@ -37,7 +40,7 @@ app.use(session({
 app.use(express.static(__dirname+'/public'))
 app.engine('handlebars', handlebars.engine())
 app.use(addLogger)
-
+app.use(cookieParser("Naza123"))
 //routes
 
 app.get("/loggerTest", (req, res) => {
@@ -52,6 +55,7 @@ app.get("/loggerTest", (req, res) => {
 app.use("/api/products", products_router)
 app.use("/api/carts", cart_router)
 app.use("/api/session", loginRouter)
+app.use("/api/users", userRouter)
 app.use("/", viewRouter)
 app.get("/mockingproducts", (req, res) => {
     const products = []
@@ -77,6 +81,7 @@ const connectMongoDB = async () => {
         process.exit()
     }
 }
+console.log(createHash("123"))
 
 
 connectMongoDB()
@@ -84,7 +89,7 @@ connectMongoDB()
 //socket
 const server = app.listen(port, console.log("Corriendo en el puerto", port))
 const socketServer = new Server(server)
-
+const mailManager = new MailManager()
 socketServer.on("connection", socket => {
 
     messageRepositories.getMessage()
@@ -101,6 +106,10 @@ socketServer.on("connection", socket => {
     socket.on("addProducts", async data => {
         console.log("data:")
         await cartRepositories.addProducts(data.cart, data.id, data.quantity)
+    })
+
+    socket.on("sendEmail", async data => {
+        await mailManager.sendResetPassword(data.email, data.link)
     })
 })
 

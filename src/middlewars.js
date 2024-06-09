@@ -12,7 +12,7 @@ export function notLogin(req, res, next) {
     if(req.session.user) {
         return res.redirect("/current")
    }
-
+   
    next()
 }
 
@@ -28,6 +28,8 @@ export function rolUser(req, res, next){
 export function isAdmin(req, res, next) {
     if(req.session.user.rol != "admin") {
          res.status(403).send({status: "error", message: "Not authorized, you have to be admin"})
+        console.log("Error")
+
     }else {
         next()
     } 
@@ -36,17 +38,30 @@ export function isAdmin(req, res, next) {
 export function isCart(req, res, next){
     const id = req.params.cid
     if(req.session.user.cart == id) return next()
+    
     res.send({status: "error", message: "Not authorized, you can only add products to your cart"})
 }
 
 export function errorsHandler(error, req, res, next) {
     if(error) {
         if(error.code) {
-            req.logger.error(`${error.name}: ${error.cause}`)
+           req.logger.error(`${error.name}: ${error.cause}`)
            return res.status(error.code).send({status: "error", message: error.message})
        }else {
+            console.log(error)
             res.status(500).send({status: "error", error: "Unhandled error"})
        }
     }
     next()
+}
+
+export function isValidCreateProduct(req, res, next) {
+    req.logger.info(req.session.user.rol)
+    if(req.session.user.rol != "admin" && req.session.user.rol != "premium") {
+        res.send({status: "error", message:"No authorized, tou have to be admin or premium"})   
+    }else {
+        next()
+    }
+
+
 }

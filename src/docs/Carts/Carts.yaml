@@ -1,0 +1,228 @@
+paths:
+  /api/carts:
+    post:
+      summary: "Crea un carrito vacio automaticamente"
+      tags:
+        - Carts
+  
+  /api/carts/{cid}:
+    get: 
+      summary: "Recibir un carrito con su ID"
+      tags: 
+        - Carts
+      parameters: 
+      - name: cid
+        in: path
+        required: true
+        description: id del carrito que se desea solicitar 
+        schema:
+          $type: String  
+      responses:       
+        "200":
+          description: "Producto obtenido correctamente"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Cart'
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "500":
+          description: "Error interno del servidor" 
+    put: 
+      summary: "Modificar un carrito con su ID"
+      tags: 
+        - Carts
+      parameters: 
+      - name: cid
+        in: path
+        required: true
+        description: id del carrito que se desea modificar 
+        schema:
+         $type: String  
+      requestBody: 
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateCart"
+      responses:       
+        "200":
+          description: "Producto obtenido correctamente"
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "500":
+          description: "Error interno del servidor"
+    delete: 
+      summary: "Eliminar un carrito con su ID"
+      tags: 
+        - Carts
+      parameters: 
+      - name: cid
+        in: path
+        required: true
+        description: id del carrito que se desea elimar 
+        schema:
+          $type: String  
+      responses:       
+        "200":
+          description: "Cart eliminado correctamente"
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "500":
+          description: "Error interno del servidor" 
+  
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: "Añadir un producto a un carrito"
+      tags: 
+        - Carts
+      parameters: 
+      - name: cid
+        in: path
+        required: true
+        description: id del carrito al que le se va a añadir el producto
+        schema:
+          $type: String  
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se va a añadir al carrito
+        schema:
+          $type: String   
+      responses: 
+        "200":
+          description: "Producto añadido correctamente"
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "403":
+          description: "No esta autorizado a añadir al carrito"  
+        "500":
+          description: "Error interno del servidor" 
+    delete: 
+      summary: "Eliminar un producto de un carrito"
+      tags: 
+        - Carts
+      parameters: 
+      - name: cid
+        in: path
+        required: true
+        description: id del carrito al que le se va a eliminar el producto
+        schema:
+          $type: String  
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se va a aliminar del carrito
+        schema:
+          $type: String   
+      responses: 
+        "200":
+          description: "Producto eliminado correctamente"
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "403":
+          description: "No esta autorizado a editar el carrito"  
+        "500":
+          description: "Error interno del servidor" 
+    put: 
+      summary: "Modificar un producto de un carrito"
+      tags: 
+        - Carts
+      parameters: 
+      - name: cid
+        in: path
+        required: true
+        description: id del carrito 
+        schema:
+          $type: String  
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se va a modificar
+        schema:
+          $type: String   
+      requestBody: 
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/updateProductCart"
+      responses: 
+        "200":
+          description: "Producto modificado correctamente"
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "403":
+          description: "No esta autorizado a editar el carrito"  
+        "500":
+          description: "Error interno del servidor"
+
+  /api/carts/{cid}/purchase:
+    post: 
+      summary: "Se hara un ticket del carrito"
+      tags: 
+        - Carts
+      parameters: 
+      - name: cid
+        in: path
+        required: true
+        description: id del carrito del que se hara ticket 
+        schema:
+          $type: String  
+      responses:       
+        "200":
+          description: "Ticket realizado correctamente"
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "500":
+          description: "Error interno del servidor" 
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id: 
+          type: string
+          description: id autogenerado
+        products: 
+            type: []
+            description: Contiene los productos del carrito, con su id y quantity
+      example:
+        _id: 664643e5ccd51d434538587f
+        products: [
+          {
+            product: 65fedc8a976311c40eb7e217,
+            quantity: 7,
+            _id: 65fedc8a976311c40eb7e217
+          }
+        ]
+  requestBodies:
+    updateCart: 
+      type: object
+      properties:
+        _id: 
+          type: string
+          description: id autogenerado
+        products: 
+            type: []
+            description: Contiene los productos del carrito, con su id y quantity
+      example: 
+        [
+            {
+              product: 65fedc8a976311c40eb7e217,
+              quantity: 7,
+              _id: 65fedc8a976311c40eb7e217
+            }
+          ]
+    updateProductCart:
+      type: object
+      properties:
+        quantity:
+          type: number
+          description: Cantidad del producto en el carrito
+      example:
+        {
+          quantity: 5
+        }

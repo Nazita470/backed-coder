@@ -77,7 +77,7 @@ class CartController{
     
 
         const result = await cartRepositories.deleteProduct(cid, pid)
-        if(!result) return res.send({status: "error", message: "product not exists"}) 
+        if(!result) return res.status(404).send({status: "error", message: "product not exists"}) 
         return res.send({status: "sucess", message: "product eliminated"})
     }
     

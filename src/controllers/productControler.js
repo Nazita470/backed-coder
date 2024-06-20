@@ -93,7 +93,7 @@ class ProductController {
         const owner = product[0].owner
         if(req.session.user.rol == "premium"){
             if(req.session.user.email != owner) {
-                return res.send({status: "error", message:"If you are premium, you can only update your products"})
+                return res.status(403).send({status: "error", message:"If you are premium, you can only update your products"})
             }
         }
         productRepositories.updateProducts(id, change)
@@ -127,5 +127,7 @@ export default ProductController
     "stock": 5,
     "category": 4
 
+     "email": "adminCoder@coder.com",
+   "password": "adminCod3r123"
     
 */

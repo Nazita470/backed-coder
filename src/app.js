@@ -21,9 +21,25 @@ import MailManager from "./utils/mail/mailManager.js"
 import { createHash } from "./utils.js"
 import cookieParser from "cookie-parser"
 import userRouter from "./routes/userRouter.js"
+import swaggerJSDoc from "swagger-jsdoc"
+import swaggerUiExpress from "swagger-ui-express"
+
+
 const app = express()
 const port = valores.port
 const mongoURL = valores.mongo_url
+const swaggerOptions = {
+    definition:{
+        openapi:"3.0.1",
+        info: {
+            title: "Documentacion de la api de un ecommerce",
+            description: "API pensada para una ecommerce, dando de baja productos, creando carritos y usarios con diferentes roles"
+        }
+    },
+
+    apis:[`${__dirname}/docs/**/*.yaml`]
+}
+const specs = swaggerJSDoc(swaggerOptions)
 //Middlewares
 app.set('views', __dirname+'/views')
 app.set('view engine', 'handlebars')
@@ -41,6 +57,8 @@ app.use(express.static(__dirname+'/public'))
 app.engine('handlebars', handlebars.engine())
 app.use(addLogger)
 app.use(cookieParser("Naza123"))
+
+
 //routes
 
 app.get("/loggerTest", (req, res) => {
@@ -52,11 +70,6 @@ app.get("/loggerTest", (req, res) => {
     req.logger.fatal("Alerta")
     res.send({message: "Prueba logger"})
 })
-app.use("/api/products", products_router)
-app.use("/api/carts", cart_router)
-app.use("/api/session", loginRouter)
-app.use("/api/users", userRouter)
-app.use("/", viewRouter)
 app.get("/mockingproducts", (req, res) => {
     const products = []
     for(let i = 0; i < 100; i++) {
@@ -64,6 +77,14 @@ app.get("/mockingproducts", (req, res) => {
     }
     res.send(products)
 })
+app.use("/api/products", products_router)
+app.use("/api/carts", cart_router)
+app.use("/api/session", loginRouter)
+app.use("/api/users", userRouter)
+app.use("/", viewRouter)
+app.use("/apidocs", swaggerUiExpress.serve,swaggerUiExpress.setup(specs, {
+    customCss: ".swagger-ui .topbar {display: none}"
+}))
 
 //Error
 app.use(errorsHandler)
@@ -72,6 +93,8 @@ app.use(errorsHandler)
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
+
+//Mongo
 const connectMongoDB = async () => {
     try {
         await mongoose.connect(mongoURL)
@@ -81,13 +104,13 @@ const connectMongoDB = async () => {
         process.exit()
     }
 }
-console.log(createHash("123"))
 
 
 connectMongoDB()
 
 //socket
 const server = app.listen(port, console.log("Corriendo en el puerto", port))
+
 const socketServer = new Server(server)
 const mailManager = new MailManager()
 socketServer.on("connection", socket => {

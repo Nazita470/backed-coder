@@ -31,7 +31,6 @@ class CartManager {
 
     addProducts = async (cid, prodId, quantity) => {
         try{
-            console.log("quantity", quantity)
             const cart = await cartsModel.find({_id: cid})
 
             if(!cart) {
@@ -39,12 +38,14 @@ class CartManager {
                 return {error: "Cart not found"}
             }
 
-            const product = cart[0].products.find((p) =>p.product.toString() == prodId )
+            const product = cart[0].products.find((p) => p.product.toString() == prodId )
 
-            console.log(product)
             if(product) {
                 product.quantity += quantity
+                console.log(product.quantity, quantity)
             }else {
+                console.log(product)
+
                 cart[0].products.push({product: prodId, quantity: quantity})
         
             }

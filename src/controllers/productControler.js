@@ -103,11 +103,11 @@ class ProductController {
     deleteProduct = async (req, res) => {
         const id = req.params.pid
         const product = await productRepositories.getById(id)
-        if(product.length == 0) return res.send({status: "error", message: "Product doesnt exist"})
+        if(product.length == 0) return res.status(404).send({status: "error", message: "Product doesnt exist"})
         const owner = product[0].owner
         if(req.session.user.rol == "premium"){
             if(req.session.user.email != owner) {
-                return res.send({status: "error", message:"If you are premium, you can only delete your products"})
+                return res.status(403).send({status: "error", message:"If you are premium, you can only delete your products"})
             }
         }
         const resultado = await productRepositories.deleteProducts(id)

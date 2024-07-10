@@ -3,8 +3,6 @@ import config from "../src/config/env.config.js"
 import {productRepositories} from "../src/repositories/index.js"
 import Assert from "assert"
 import { expect } from "chai"
-import exp from "constants"
-import { Admin } from "mongodb"
 
 mongoose.connect(config.mongo_url)
 const assert = Assert.strict

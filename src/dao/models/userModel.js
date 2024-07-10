@@ -15,6 +15,15 @@ const userSchema = new Schema({
        type: "String",
        enum: ["usuario", "admin", "premium"]
     },
+    last_connection: String,
+
+    documents: [
+        {
+            name: String,
+            reference: String
+        },
+        
+    ]
 })
 
 const userModel = mongoose.model("users", userSchema)

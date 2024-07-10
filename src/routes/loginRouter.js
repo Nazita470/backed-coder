@@ -3,6 +3,7 @@ import express from "express"
 import passport from "passport";
 import { passportCall } from "../config/passport.error.js";
 import UserController from "../controllers/userControler.js";
+import { userRepositories } from "../repositories/index.js";
 
 const loginRouter = new Router()
 const userControler = new UserController()
@@ -32,7 +33,13 @@ loginRouter.get("/faillogin", (req, res) => {
     res.send({status: "error", message: "Passaport error"})
 })
 
-loginRouter.post("/logout", (req, res) => {
+loginRouter.post("/logout", async (req, res) => {
+    const email = req.session.user.email
+    const user = userRepositories.getByEmail(email)
+    const date = new Date()
+    const fecha = date.toLocaleString('en-US', { timeZoneName: 'short' })
+    user.last_connection = fecha
+    await userRepositories.updateUser(email, user)
     req.session.destroy(err => {
         if(!err) res.send({status: "sucess", message: "Logout ok!"})
         else res.send({status: "error", body: err})

@@ -59,7 +59,8 @@ const initializePassport = () => {
                         email: username,
                         age, 
                         password: createHash(password),
-                        rol
+                        rol,
+                        last_connection: null
                     
                 }
 
@@ -77,13 +78,15 @@ const initializePassport = () => {
         {usernameField: "email"},
         async (username, password, done) => {
             try{
-                console.log(username)
                 const prevUser = await userRepositories.getByEmail(username)
-                console.log(prevUser.password)    
                 if(!prevUser) return done(null, false, {message: "User doesnt exist"})
                 //if(password != prevUser.password) return done(null, false, {message: "Incorrect password"})
                 if(!isValidPassword(prevUser, password)) return done(null, false, {message: "Incorrect password"})
-                let user = await userRepositories.getUserToFront(username)
+                const date = new Date()
+                const fecha = date.toLocaleString('en-US', { timeZoneName: 'short' })
+                prevUser.last_connection = fecha
+                await userRepositories.updateUser(username, prevUser)
+                const user = await userRepositories.getUserToFront(username)
                 return done(null, user, {message: "Log in"})
             }catch(error) {
                 return done("Error al buscar el usuario: " + error)

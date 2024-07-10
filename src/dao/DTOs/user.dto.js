@@ -5,7 +5,8 @@ export default class UserDTO {
             age:valores.age,
             email: valores.email,
             cart: valores.cart,
-            rol: valores.rol
+            rol: valores.rol,
+            last_connection: valores.last_connection
         }
         return user
     }
@@ -18,7 +19,8 @@ export default class UserDTO {
             email: valores.email,
             cart: valores.cart,
             rol: valores.rol,
-            password: valores.password
+            password: valores.password,
+            last_connection: valores.last_connection
         }
 
         return user

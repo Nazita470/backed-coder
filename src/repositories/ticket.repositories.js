@@ -6,8 +6,19 @@ export  class TicketRepositories {
     }
 
     create = async (ticket) => {
-        let newTicket = new TicketDTO(ticket)
-        let result = this.dao.create(newTicket)
+        let result = this.dao.create(ticket)
         return result
     }
+
+    getById = async (tid) => {
+        const ticket = await this.dao.getById(tid)
+        return ticket
+    }
+
+    
+    getByCode = async (code) => {
+        const ticket = await this.dao.getByCode(code)
+        return ticket
+    }
+
 }

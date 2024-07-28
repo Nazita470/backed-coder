@@ -15,6 +15,7 @@ function sumarProductosCarrito(arr){
 class TicketController {
     create = async (req, res) => {
         const {cid} = req.params
+        const userEmail = req.session.user.email 
         const carrito = await cartRepositories.getCartByPopulate(cid)
         if(!carrito) return res.status(404).send({status: "error", message: "Cart doesnt exist"})
         let newCarrito = carrito[0].products
@@ -28,16 +29,23 @@ class TicketController {
                 sacadosDelCarrito.push(product)
             }
         })
-        req.logger.info(newCarrito)
         await cartRepositories.updateCart(cid, sacadosDelCarrito)
         const ticket = {
             code: uuidv4(),
             purchase_datatime: new Date(),
             amount: sumarProductosCarrito(newCarrito),
-            purchaser: "naza@mail.com"
+            purchaser: userEmail
         }
-        const result = await ticketRepositories.create(ticket)
+       const result = await ticketRepositories.create(ticket)
+        
+        if(!result) res.status(500).send({status: "error", message: "Internal error"})
         res.send({status: "sucess", message: "Ticket created", new_cart: sacadosDelCarrito, ticket: ticket})
+    }
+
+    getById = async (req, res) => {
+        const tid = req.params.tid
+        const ticket = await ticketRepositories.getById(tid)
+        res.send(ticket)
     }
 }
 

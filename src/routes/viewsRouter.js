@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { authLogin, notLogin, rolUser } from "../middlewars.js";
-import { cartRepositories } from "../repositories/index.js";
+import { authLogin, isAdmin, notLogin, rolUser } from "../middlewars.js";
+import { cartRepositories, userRepositories } from "../repositories/index.js";
 import { productRepositories } from "../repositories/index.js";
+import { ticketRepositories } from "../repositories/index.js";
 import CostumError from "../utils/errors/customError.js";
 import ERROR_TYPES
  from "../utils/errors/enums.js";
+import userModel from "../dao/models/userModel.js";
 const viewRouter = new Router()
 
 
@@ -119,6 +121,20 @@ viewRouter.get("/restore/password", authLogin,  (req, res) => {
     }
 
     res.render("restorePasswordTime")
+})
+
+viewRouter.get("/users", authLogin, isAdmin , async (req, res) => {
+    const users = await userRepositories.getAllUser()
+    console.log(users)
+    res.render("users", {users: users})
+})
+
+viewRouter.get("/ticket/:tid", authLogin, async (req, res) => {
+    const tid = req.params.tid
+    const ticket = await ticketRepositories.getByCode(tid)
+    console.log(ticket)
+    if(!ticket) return res.status(404).send({status: "error", message: "Ticket doesnt exists"})
+    res.render("ticket", ticket[0])
 })
 
 export default viewRouter

@@ -6,6 +6,7 @@
         <div>Edad: {{user.age}}</div>
         <div>Rol: {{user.rol}}</div>
         <div id="cartId" cartID={{user.cart}}>CartId: {{user.cart}}</div>
+        <button id="verCartButton" name={{user.cart}}>Ver carrito</button>
         {{#if isUsuario}}
             <button name={{user.cart}} id="logoutButton">Logout</button>
         {{/if}}

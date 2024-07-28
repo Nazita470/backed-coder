@@ -23,10 +23,12 @@ import cookieParser from "cookie-parser"
 import userRouter from "./routes/userRouter.js"
 import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUiExpress from "swagger-ui-express"
+import ticket_router from "./routes/ticketRouter.js"
+import ProductsManager from "./dao/services/product.mongo.dao.js"
 
-
+const productsManager = new ProductsManager()
 const app = express()
-const port = valores.port
+const port = valores.port || 8080
 const mongoURL = valores.mongo_url
 const swaggerOptions = {
     definition:{
@@ -72,8 +74,10 @@ app.get("/loggerTest", (req, res) => {
 })
 app.get("/mockingproducts", (req, res) => {
     const products = []
-    for(let i = 0; i < 100; i++) {
-        products.push(generateProduct())
+    for(let i = 0; i < 10; i++) {
+        let product = generateProduct()
+        products.push(product)
+        productsManager.addProducts(product)
     }
     res.send(products)
 })
@@ -81,6 +85,7 @@ app.use("/api/products", products_router)
 app.use("/api/carts", cart_router)
 app.use("/api/session", loginRouter)
 app.use("/api/users", userRouter)
+app.use("/api/ticket", ticket_router)
 app.use("/", viewRouter)
 app.use("/apidocs", swaggerUiExpress.serve,swaggerUiExpress.setup(specs, {
     customCss: ".swagger-ui .topbar {display: none}"

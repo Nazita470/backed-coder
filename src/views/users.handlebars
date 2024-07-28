@@ -1,0 +1,27 @@
+<div>
+    <h1>Users</h1>
+    <hr>
+   {{#each users}}
+        <div id="userContainer">
+            <p><strong>ID: {{this._id}}</strong></p>
+            <p>Name: {{this.name}}</p>
+            <p>Last name: {{this.last_name}}</p>
+            <p>Email: {{this.email}}</p>
+            <p>Age: {{this.age}}</p>
+            <p>Cart: {{this.cart}}</p>
+            <p>Passwrod: {{this.password}}</p>
+            <p>Rol: {{this.rol}}</p>
+            <button  id="changeRol" name={{this._id}}>Change rol</button>
+            <p>last_connection: {{this.last_connection}}</p>
+            <p>documents: {{this.documents}}</p>
+            <button  id="deleteButton" name={{this._id}}>Delete</button>
+        
+            <p  id="message" name={{this._id}}></p>
+        </div>
+        
+        <hr>
+
+   {{/each}}
+</div>
+
+<script src="/js/users.js"></script>

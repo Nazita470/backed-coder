@@ -2,6 +2,11 @@ import userModel from "../models/userModel.js";
 import { cartRepositories } from "../../repositories/index.js";
 
 class UserManager {
+    getAllUser = async () => {
+        const users = await userModel.find().lean()
+        return users
+    }
+
     getUserByID = async (id) => {
         const user = await userModel.findById(id)
         return user

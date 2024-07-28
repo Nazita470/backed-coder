@@ -6,7 +6,6 @@ class MailManager {
     constructor() {
         this.transporter = nodemailer.createTransport({
             service: config.email_service,
-            //host: config.email_host,
             port: 587,
             auth: {
                 user: config.email,
@@ -38,6 +37,26 @@ class MailManager {
             })
         }
 
+    }
+
+    sendMessage = async (email, subject, text) => {
+        let mailOptions = {
+            from: `Cuenta de <${config.email}>`,
+            to: `${email}`,
+            subject: `${subject}`,
+            text: text,
+        }
+        try {
+            await this.transporter.sendMail(mailOptions)
+            return {status: "sucess", message: "Email enviado"} 
+        } catch (error) {
+            throw CostumError.createError({
+                name: "Mail sending error",
+                cause: "There is a problem in email sending",
+                message: "Error sending email",
+                code: ERROR_TYPES.ERROR_INTERNAL_ERROR
+            })
+        }
     }
 
 }

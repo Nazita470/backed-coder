@@ -5,6 +5,9 @@ import CostumError from "../utils/errors/customError.js";
 import ERROR_TYPES from "../utils/errors/enums.js";
 import { generateProductErrorInfo } from "../utils/errors/info.js";
 import messageModel from "../dao/models/messagesM.js";
+import MailManager from "../utils/mail/mailManager.js"
+
+const mailManager = new MailManager()
 class ProductController {
     getProducts = async (req, res) =>{
         
@@ -110,7 +113,12 @@ class ProductController {
                 return res.status(403).send({status: "error", message:"If you are premium, you can only delete your products"})
             }
         }
+       
         const resultado = await productRepositories.deleteProducts(id)
+        if(owner != "admin") {
+            mailManager.sendMessage(owner, `Eliminacion del producto ${id}`, "Se eliminino el producto " + id + ", que es de su propiedad")
+            
+        }
         res.send({status: "sucess", message: `user ${id} deleted`})
     
     

@@ -56,7 +56,8 @@ export function generateProduct(){
         stock: customFaker.string.numeric(),
         category: customFaker.commerce.department(),
         status: true,
-        thumbnail: thumbnail
+        thumbnail: thumbnail,
+        owner: "admin"
     }
 }
 

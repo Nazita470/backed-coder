@@ -83,8 +83,8 @@ const initializePassport = () => {
                 //if(password != prevUser.password) return done(null, false, {message: "Incorrect password"})
                 if(!isValidPassword(prevUser, password)) return done(null, false, {message: "Incorrect password"})
                 const date = new Date()
-                const fecha = date.toLocaleString('en-US', { timeZoneName: 'short' })
-                prevUser.last_connection = fecha
+                //const fecha = date.toLocaleString('en-US', { timeZoneName: 'short' })
+                prevUser.last_connection = date
                 await userRepositories.updateUser(username, prevUser)
                 const user = await userRepositories.getUserToFront(username)
                 return done(null, user, {message: "Log in"})

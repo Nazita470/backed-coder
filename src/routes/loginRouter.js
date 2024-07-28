@@ -37,8 +37,8 @@ loginRouter.post("/logout", async (req, res) => {
     const email = req.session.user.email
     const user = userRepositories.getByEmail(email)
     const date = new Date()
-    const fecha = date.toLocaleString('en-US', { timeZoneName: 'short' })
-    user.last_connection = fecha
+    //const fecha = date.toLocaleString('en-US', { timeZoneName: 'short' })
+    user.last_connection = date
     await userRepositories.updateUser(email, user)
     req.session.destroy(err => {
         if(!err) res.send({status: "sucess", message: "Logout ok!"})

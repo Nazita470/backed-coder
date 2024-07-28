@@ -7,6 +7,7 @@ const cart_id = logoutButton.name
 const resetPasswordButton = document.getElementById("reset")
 const emailDiv = document.getElementById("email")
 const resetDiv = document.getElementById("divReset")
+const verCartButton = document.getElementById("verCartButton")
 
 form.forEach((item) => {
     item.addEventListener("submit", async (e) => {
@@ -51,4 +52,10 @@ resetPasswordButton.addEventListener("click", (e) => {
 
         resetDiv.innerHTML = `<button id="reset">Reset password</button>`
     }, 2000)
+})
+
+verCartButton.addEventListener("click", (e) => {
+    e.preventDefault()
+    const id = verCartButton.getAttribute("name")
+    window.location.replace(`/cart/${id}`)
 })

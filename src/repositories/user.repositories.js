@@ -6,6 +6,11 @@ export default class UserRepositories {
         this.dao = dao
     }
 
+    getAllUser = async () => {
+        const users = await this.dao.getAllUser()
+        return users
+    }
+
     getUserByID = async (id) => {
         const result = await this.dao.getUserByID(id)
         return result
@@ -32,7 +37,7 @@ export default class UserRepositories {
     }
 
     deteleUser = async (id) => {
-        const result = await this.dao.result.deteleUser(id)
+        const result = await this.dao.deteleUser(id)
         return result
     }
 
@@ -42,5 +47,9 @@ export default class UserRepositories {
         return user
     }
 
-    
+    getAllUserToFront = async () => {
+        const users = await this.dao.getAllUser()
+        const newUsers = users.map((user) => userDTO.getUserToFront(user))
+        return newUsers
+    }    
 }

@@ -15,7 +15,7 @@ const userSchema = new Schema({
        type: "String",
        enum: ["usuario", "admin", "premium"]
     },
-    last_connection: String,
+    last_connection: Date,
 
     documents: [
         {

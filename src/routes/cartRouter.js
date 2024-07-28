@@ -25,4 +25,6 @@ cart_router.delete("/:cid", cartController.deleteCart)
 
 cart_router.post("/:cid/purchase", ticketController.create)
 
+
+
 export default cart_router

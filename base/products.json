@@ -1,0 +1,93 @@
+[
+	{
+		"title": "Vainilla",
+		"description": "coca",
+		"code": 1,
+		"price": 1,
+		"stock": 3,
+		"category": 4,
+		"status": true
+	},
+	{
+		"title": "Coco",
+		"description": "Banana",
+		"code": 1,
+		"price": 1,
+		"stock": 3,
+		"category": 4,
+		"status": true
+	},
+	{
+		"newProducts": {
+			"title": "Vainilla",
+			"description": "coca",
+			"code": "1",
+			"price": 1,
+			"stock": 3,
+			"category": "4",
+			"status": true,
+			"thumbnal": []
+		}
+	},
+	{
+		"newProducts": {
+			"title": "Vainilla",
+			"description": "coca",
+			"code": "1",
+			"price": 1,
+			"stock": 3,
+			"category": "4",
+			"status": true,
+			"thumbnal": []
+		}
+	},
+	{
+		"newProducts": {
+			"title": "Coca",
+			"description": "coca",
+			"code": "1",
+			"price": 1,
+			"stock": 3,
+			"category": "4",
+			"status": true,
+			"thumbnal": []
+		}
+	},
+	{
+		"newProducts": {
+			"title": "Mate",
+			"description": "coca",
+			"code": "1",
+			"price": 1,
+			"stock": 3,
+			"category": "4",
+			"status": true,
+			"thumbnal": []
+		}
+	},
+	{
+		"newProducts": {
+			"title": "Vainilla",
+			"description": "coca",
+			"code": "1",
+			"price": 1,
+			"stock": 3,
+			"category": "4",
+			"status": true,
+			"thumbnal": []
+		}
+	},
+	{
+		"newProducts": {
+			"title": "Vainilla",
+			"description": "coca",
+			"code": "1",
+			"price": 100,
+			"stock": 3,
+			"category": "4",
+			"status": true,
+			"thumbnal": [],
+			"__v": 0
+		}
+	}
+]

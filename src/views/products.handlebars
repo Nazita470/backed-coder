@@ -1,0 +1,83 @@
+{{#if isValid}}
+    {{#if hasUser}}
+        <h1>Bienvenido {{user.name}}</h1>
+
+        <div email={{user.email}} id="email">Email: {{user.email}}</div>
+        <div>Edad: {{user.age}}</div>
+        <div>Rol: {{user.rol}}</div>
+        <div id="cartId" cartID={{user.cart}}>CartId: {{user.cart}}</div>
+        <button id="verCartButton" name={{user.cart}}>Ver carrito</button>
+        {{#if isUsuario}}
+            <button name={{user.cart}} id="logoutButton">Logout</button>
+        {{/if}}
+        <div id="divReset">
+            <button id="reset">Reset password</button>
+        </div>
+        {{#if isAdmin}}
+            <button name="nada" id="logoutButton">Logout</button>
+        {{/if}}
+        
+       <hr>
+    {{/if}}
+    <h2>Listado de productos</h2>
+
+    <div>
+        {{#if isUsuario}}
+            {{#each docs}}
+                <form id="formulario" name={{this._id}}>
+                    <p> <strong>ID: {{this._id}}</strong> </p> 
+                    <button type="submit">Agregar al carrito</button>
+                    <p>Title: {{this.title}}</p>
+                    <p>Description: {{this.description}}</p>
+                    <p>Code: {{this.code}}</p>
+                    <p>Price: {{this.price}}</p>
+                    <p>Stock: {{this.stock}}</p>
+                    <p>Category: {{this.category}}</p>
+                    <p>Status: {{this.status}}</p>
+                    <p>Thumbnal: {{this.thumbnal}}</p>
+                    <p>Owner: {{this.owner}}</p>
+                </form>
+                <hr>
+            {{/each}}
+        {{/if}}
+        {{#if isAdmin}}
+              {{#each docs}}
+                <form id="formulario" name={{this._id}}>
+                    <p> <strong>ID: {{this._id}}</strong> </p> 
+                    <p>Title: {{this.title}}</p>
+                    <p>Description: {{this.description}}</p>
+                    <p>Code: {{this.code}}</p>
+                    <p>Price: {{this.price}}</p>
+                    <p>Stock: {{this.stock}}</p>
+                    <p>Category: {{this.category}}</p>
+                    <p>Status: {{this.status}}</p>
+                    <p>Thumbnal: {{this.thumbnal}}</p>
+                </form>
+                <hr>
+            {{/each}}
+        {{/if}}
+    </div>
+    <div>
+        {{#if hasPrevPage}}
+            <a href={{this.prevLink}}>Anterior</a>
+        {{/if}}
+        &nbsp;
+        {{this.page}}
+
+        {{#if hasNextPage}}
+            <a href={{this.nextLink}}>Siguiente</a>
+        {{/if}} 
+
+    </div>
+
+    <hr>
+
+{{/if}}
+
+{{#else}}
+    <h2>No hay productos</h2>
+{{/else}}
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/products.js"></script>
+   

@@ -1,0 +1,23 @@
+<h1>Productos del carrito {{id}}</h1>
+<section>
+    {{#each productos}}
+        <div>
+            <p>ID: {{this.product._id}}  Quantity:{{this.quantity}}</p>
+            <p>Title: {{this.product.title}}</p>
+            <p>Description: {{this.product.description}}</p>
+            <p>Code: {{this.product.code}}</p>
+            <p>Price: {{this.product.price}}</p>
+            <p>Stock: {{this.product.stock}}</p>
+            <p>Category: {{this.product.category}}</p>
+            <p>Status: {{this.product.status}}</p>
+            <p>Thumbnal: {{this.product.thumbnal}}</p>
+            <button name={{this.product._id}} id="deleteButton">Sacar</button>
+        </div>
+        <hr>
+    {{/each}}
+
+    <button id="ticketButton" name={{id}}>Realizar ticket</button>
+</section>
+
+<a href="/products">Volver a products</a>
+<script src="/js/cart.js"></script>

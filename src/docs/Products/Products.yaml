@@ -1,0 +1,263 @@
+paths: 
+  /api/products:
+    get: 
+      summary: Obtiene todos los productos
+      tags: 
+        - Products
+      parameters: 
+      - name: page  
+        in: query
+        required: false
+        description: Numero de pagina que debo traer. Por default es 1
+        schema: 
+          $type: Number
+      - name: limit
+        in: query
+        required: false
+        description: Limite de productos de una pagina. Por default 10
+        schema:
+          $type: number
+      - name: sort
+        in: query
+        required: false
+        description: Orden de los productos devueltos por precio. Puede ser ascendente(ASC) 0 descendente(DESC)
+        schema:
+          $type: string
+      - name: query
+        in: query
+        required: false
+        description: Filtros de productos
+        schema:
+          $type: string    
+
+        
+      responses: 
+        "200":
+          description: "Productos obtenidos correctamente"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description: "Error interno del servidor"  
+    post: 
+      summary: Crear un producto. Debes ser ADMIN o PREMIUM
+      tags: 
+       - Products
+      parameters: 
+      requestBody: 
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createProduct'
+      responses: 
+        "200":
+          description: "Producto creado correctamente"
+        "400":
+          description: "Los datos recibidos fueron incompletos"
+        "403":
+          description: "No esta autorizado a crear un producto"
+        "500":
+          description: "Error interno del servidor" 
+  /api/products/{pid}:
+    get: 
+      summary: Obtiene el producto a partir del ID
+      tags:
+        - Products
+      parameters: 
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se desea solicitar 
+        schema:
+          $type: String
+      responses: 
+        "200":
+          description: "Producto obtenido correctamente"
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "500":
+          description: "Error interno del servidor" 
+    put:
+      summary: Modificar un producto con su ID
+      tags:
+        - Products
+      parameters: 
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se desea modificar 
+        schema:
+          $type: String
+      requestBody: 
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateProduct'    
+      responses: 
+        "200":
+          description: "Producto obtenido correctamente"
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "403":
+          description: "No esta autorizado para modificar el producto"
+        "500":
+          description: "Error interno del servidor"
+    delete:
+      summary: Eiminar el producto con su ID
+      tags:
+        - Products
+      parameters: 
+      - name: pid
+        in: path
+        required: true
+        description: id del producto que se desea eliminar 
+        schema:
+          $type: String
+      responses: 
+        "200":
+          description: "Producto obtenido correctamente"
+        "400":
+          description: "Los datos recibidos fueron incorrectos o erroneos"
+        "403":
+          description: "No esta autorizado para eliminar el producto"  
+        "500":
+          description: "Error interno del servidor" 
+  
+components:
+  schemas:
+    Product: 
+      type: object
+      properties: 
+        _id: 
+          type: string
+          description: id autogenerado
+        title: 
+          type: string
+          description: Nombre del producto
+        description: 
+          type: string
+          description: Descripcion del producto 
+        code: 
+          type: string
+          description: Codigo unico por producto
+        price: 
+          type: number
+          description: Precio del producto
+        stock: 
+          type: number
+          description: Cantidad de productos disponibles     
+        category: 
+          type: string
+          description: Categoria del producto
+        status: 
+          type: boolean
+          description: id autogenerado
+        owner: 
+          type: string
+          description: ID del usuario PREMIUM que lo creo. Si lo creo un ADMIN, contiene admin   
+        thumbnail: 
+          type: [String]
+          description: "Imagenes del producto"    
+      example:
+        _id: 6665b5c268b13a5a010ca0da
+        title: Coca
+        description: ifbhif
+        code: 1
+        price: 10
+        stock: 5
+        category: 4
+        status: true
+        owner: admin
+        thumbnal: ["img1.jpg"]
+  requestBodies:
+    createProduct: 
+      type: object
+      properties: 
+        title: 
+          type: string
+          description: Nombre del producto
+        description: 
+          type: string
+          description: Descripcion del producto 
+        code: 
+          type: string
+          description: Codigo unico por producto
+        price: 
+          type: number
+          description: Precio del producto
+        stock: 
+          type: number
+          description: Cantidad de productos disponibles     
+        category: 
+          type: string
+          description: Categoria del producto
+        status: 
+          type: boolean
+          description: id autogenerado
+        owner: 
+          type: string
+          description: ID del usuario PREMIUM que lo creo. Si lo creo un ADMIN, contiene admin   
+        thumbnail: 
+          type: [String]
+          description: "Imagenes del producto"    
+      example:
+        title: Coca
+        description: ifbhif
+        code: 1
+        price: 10
+        stock: 5
+        category: 4
+        status: true
+        owner: admin
+        thumbnal: ["img1.jpg"]
+    updateProduct:
+      type: object
+      properties: 
+        title: 
+          type: string
+          description: Nombre del producto
+        description: 
+          type: string
+          description: Descripcion del producto 
+        code: 
+          type: string
+          description: Codigo unico por producto
+        price: 
+          type: number
+          description: Precio del producto
+        stock: 
+          type: number
+          description: Cantidad de productos disponibles     
+        category: 
+          type: string
+          description: Categoria del producto
+        status: 
+          type: boolean
+          description: id autogenerado
+        owner: 
+          type: string
+          description: ID del usuario PREMIUM que lo creo. Si lo creo un ADMIN, contiene admin   
+        thumbnail: 
+          type: [String]
+          description: "Imagenes del producto"    
+      example:
+        title: Coca
+        description: ifbhif
+        code: 1
+        price: 10
+        stock: 5
+        category: 4
+        status: true
+        owner: admin
+        thumbnal: ["img1.jpg"]

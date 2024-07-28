@@ -1,0 +1,13 @@
+<div>
+    {{#if error}}
+        {{#if msj}}
+             <div>{{msj}}</div>
+        {{/if}}
+        <a href="/register">Volver a register</a>
+    {{/if}}
+     {{#if isCorrect}}
+            <div>Usuario registrado correctamente</div>
+            <a href="/login">Ir a login</a>
+    {{/if}}  
+</div>
+

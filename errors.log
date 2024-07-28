@@ -1,0 +1,14 @@
+{"level":"warn","message":"Alerta"}
+error: Alerta
+fatal: Alerta
+error: Alerta
+fatal: Alerta
+error: Alerta
+fatal: Alerta
+error: Alerta
+fatal: Alerta
+error: Alerta
+fatal: Alerta
+error: undefined {"code":400,"name":"Product not exists"}
+error: Product not exists: Poduct id doesnt exist
+error: No autorizado

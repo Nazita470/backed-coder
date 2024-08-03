@@ -103,7 +103,6 @@ app.use(passport.session())
 const connectMongoDB = async () => {
     try {
         await mongoose.connect(mongoURL)
-        console.log("Conectado a mongo")
     } catch (error) {
         console.error(error)
         process.exit()
@@ -114,7 +113,7 @@ const connectMongoDB = async () => {
 connectMongoDB()
 
 //socket
-const server = app.listen(port, console.log("Corriendo en el puerto", port))
+const server = app.listen(port, () => {})
 
 const socketServer = new Server(server)
 const mailManager = new MailManager()

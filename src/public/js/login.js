@@ -24,7 +24,6 @@ form.addEventListener("submit", (e)=> {
             return response.json()
         }
     }).then(result => {
-        console.log(result)
         window.location.replace(`/login/error?message=${result.error}`)
     })
 })

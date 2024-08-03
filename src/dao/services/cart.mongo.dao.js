@@ -34,7 +34,6 @@ class CartManager {
             const cart = await cartsModel.find({_id: cid})
 
             if(!cart) {
-                console.log("cart nout found")
                 return {error: "Cart not found"}
             }
 
@@ -42,9 +41,7 @@ class CartManager {
 
             if(product) {
                 product.quantity += quantity
-                console.log(product.quantity, quantity)
             }else {
-                console.log(product)
 
                 cart[0].products.push({product: prodId, quantity: quantity})
         
@@ -52,7 +49,6 @@ class CartManager {
 
             return await cart[0].save()
         }catch(e) {
-            console.log(e)
         }
        
     }
@@ -65,11 +61,9 @@ class CartManager {
                 cart[0].products.splice(product, 1)
                 return await cart[0].save()
             }else {
-                console.log("producto no encontrado")
                 return false
             }
         }catch(error) {
-            console.log(error)
         }
 
     }
@@ -78,7 +72,7 @@ class CartManager {
         try{
          await cartsModel.updateOne({"_id": cid}, {$set: {products: cart}})
         }catch(e) {
-            console.log(e)
+            
         }
     }
 
@@ -97,7 +91,6 @@ class CartManager {
             return await cart[0].save()
 
         } catch(error) {
-            console.log(error)        
         }
     }
 

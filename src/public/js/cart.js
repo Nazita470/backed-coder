@@ -12,7 +12,6 @@ deleteButtons.forEach((item) => {
 
         const json = await feching.json()
 
-        console.log(json)
 
         location.reload()
     })
@@ -21,12 +20,10 @@ deleteButtons.forEach((item) => {
 ticketButton.addEventListener("click", async (e) => {
     e.preventDefault()
     const id = ticketButton.getAttribute("name")
-    console.log(id)
     const feching = await fetch(`/api/carts/${id}/purchase`, {
         method: "POST"
     })
     const result = await feching.json()
-    console.log(result)
 
     result.status == "sucess" && window.location.replace(`/ticket/${result.ticket.code}`)
 })

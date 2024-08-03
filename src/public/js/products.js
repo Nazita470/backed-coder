@@ -26,13 +26,11 @@ form.forEach((item) => {
         })
 
         const result = await fetching.json()
-        console.log(result)
     })
 })
 
 logoutButton.addEventListener("click", (e) => {
     e.preventDefault()
-    console.log("click")
     fetch("/api/session/logout", {
         method: "POST",
     }).then(response => response.status == 200  && window.location.replace("/login"))

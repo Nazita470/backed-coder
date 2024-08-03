@@ -89,7 +89,6 @@ class CartController{
             cartRepositories.updateProductQuantity(cid, pid, q)
             res.send({status: "sucess", message: "Product modified"})
         } catch (error) {
-            ConsolE.log("Error en update")
         }
         
     }

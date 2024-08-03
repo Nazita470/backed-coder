@@ -13,10 +13,8 @@ Swal.fire({
     allowOutsideClick: false
 }).then(result =>{
      user = result.value
-     console.log(user)
 })
 
-console.log(form)
 
 form.addEventListener("submit", (e) => {
     e.preventDefault()

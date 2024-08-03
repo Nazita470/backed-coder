@@ -29,7 +29,6 @@ loginRouter.post("/login", passportCall("login"), async (req, res) => {
 })
 
 loginRouter.get("/faillogin", (req, res) => {
-    console.log("Error al validar")
     res.send({status: "error", message: "Passaport error"})
 })
 

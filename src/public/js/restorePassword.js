@@ -7,7 +7,6 @@ formReset.addEventListener("submit", (e) => {
     const first_password = first_input.value
     const second_password = second_input.value
     if(!second_password || !first_password ){
-        console.log(first_password, second_password)
         paragraph.innerText = `Ingresa valores`
 
         setTimeout(() => {
@@ -16,7 +15,6 @@ formReset.addEventListener("submit", (e) => {
     }
    
     else if(second_password == first_password) {
-        console.log("entro")
         fetch("/api/session/restore/password", {
             method: "POST",
             body: JSON.stringify({password: first_password}),
@@ -34,7 +32,6 @@ formReset.addEventListener("submit", (e) => {
                 }, 3000)
             }
             else {
-                console.log("Correcto!")
                 formReset.innerHTML = `
                     <div>
                         <p>Password modificada correctamente</p>

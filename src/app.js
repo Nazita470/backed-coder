@@ -132,7 +132,6 @@ socketServer.on("connection", socket => {
     })
 
     socket.on("addProducts", async data => {
-        console.log("data:")
         await cartRepositories.addProducts(data.cart, data.id, data.quantity)
     })
 

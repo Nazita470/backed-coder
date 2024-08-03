@@ -19,7 +19,6 @@ class TicketManager {
     }
 
     getById = async (uid) => {
-        console.log(uid)
         const ticket = await ticketModel.find({_id: uid})
         return ticket
     }

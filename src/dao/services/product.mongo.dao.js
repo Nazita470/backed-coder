@@ -46,7 +46,6 @@ class ProductsManager {
     }
 
     addProducts = async (prod) => {
-        console.log("PROD", prod)
         const p = await productsModel.create(prod)
         return {status: 1, payload: p}
        
@@ -57,7 +56,6 @@ class ProductsManager {
          const p = await productsModel.updateOne({_id: id}, {$set: prod})
          return p 
         }catch(error) {
-            console.log(error)
         }
     }
 

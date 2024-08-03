@@ -81,7 +81,6 @@ viewRouter.get("/products", authLogin, (req, res) => {
             result.hasUser = false
          }
 
-         console.log(result)
          res.render("products", result)
     })
     
@@ -125,14 +124,12 @@ viewRouter.get("/restore/password", authLogin,  (req, res) => {
 
 viewRouter.get("/users", authLogin, isAdmin , async (req, res) => {
     const users = await userRepositories.getAllUser()
-    console.log(users)
     res.render("users", {users: users})
 })
 
 viewRouter.get("/ticket/:tid", authLogin, async (req, res) => {
     const tid = req.params.tid
     const ticket = await ticketRepositories.getByCode(tid)
-    console.log(ticket)
     if(!ticket) return res.status(404).send({status: "error", message: "Ticket doesnt exists"})
     res.render("ticket", ticket[0])
 })

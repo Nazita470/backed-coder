@@ -77,7 +77,7 @@ app.get("/mockingproducts", (req, res) => {
     for(let i = 0; i < 10; i++) {
         let product = generateProduct()
         products.push(product)
-        productsManager.addProducts(product)
+        //productsManager.addProducts(product)
     }
     res.send(products)
 })

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { userRepositories } from "../repositories/index.js";
+import { authLogin, isAdmin } from "../middlewars.js";
 const userRouter = new Router()
 import { uploader } from "../utils/multer/multer.js";
 
@@ -27,7 +28,7 @@ userRouter.get("/", async (req, res) => {
     res.send({status: "sucess", payload: users})
 })
 
-userRouter.delete("/", async (req, res) => {
+userRouter.delete("/",authLogin , isAdmin, async (req, res) => {
     //Milisegunso por dia 86400000
     //Milisegundos por hora 3600000
     //Milisegundos por minuto 60000

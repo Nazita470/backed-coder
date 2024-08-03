@@ -57,7 +57,7 @@ export function generateProduct(){
         category: customFaker.commerce.department(),
         status: true,
         thumbnail: thumbnail,
-        owner: "admin"
+        owner: "salvatierranazareno16@gmail.com"
     }
 }
 

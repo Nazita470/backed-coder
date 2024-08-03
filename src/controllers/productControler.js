@@ -119,7 +119,7 @@ class ProductController {
             mailManager.sendMessage(owner, `Eliminacion del producto ${id}`, "Se eliminino el producto " + id + ", que es de su propiedad")
             
         }
-        res.send({status: "sucess", message: `user ${id} deleted`})
+        res.send({status: "sucess", message: `product ${id} deleted`})
     
     
     }

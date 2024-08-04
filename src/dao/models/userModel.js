@@ -24,6 +24,9 @@ const userSchema = new Schema({
         },
         
     ]
+}, {
+    bufferCommands: false,
+    autoCreate: false 
 })
 
 const userModel = mongoose.model("users", userSchema)

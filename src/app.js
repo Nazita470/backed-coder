@@ -28,7 +28,7 @@ import ProductsManager from "./dao/services/product.mongo.dao.js"
 
 const productsManager = new ProductsManager()
 const app = express()
-const port = valores.port || 8080
+const port = process.env.PORT || 8080
 const mongoURL = valores.mongo_url
 const swaggerOptions = {
     definition:{
@@ -42,6 +42,8 @@ const swaggerOptions = {
     apis:[`${__dirname}/docs/**/*.yaml`]
 }
 const specs = swaggerJSDoc(swaggerOptions)
+
+
 //Middlewares
 app.set('views', __dirname+'/views')
 app.set('view engine', 'handlebars')

@@ -105,10 +105,7 @@ app.use(passport.session())
 //Mongo
 const connectMongoDB = async () => {
     try {
-       await mongoose.connect(process.env.MONGO_URL, {
-        bufferCommands: true,
-        bufferMaxEntries:0
-       })
+       await mongoose.connect(process.env.MONGO_URL)
     } catch (error) {
         
     }
@@ -116,29 +113,8 @@ const connectMongoDB = async () => {
 }
 
 
-//connectMongoDB()
+connectMongoDB()
 
-const client = new MongoClient(process.env.MONGO_URL, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
-  
-  async function run() {
-    try {
-      // Connect the client to the server	(optional starting in v4.7)
-      await client.connect();
-      // Send a ping to confirm a successful connection
-      await client.db("admin").command({ ping: 1 });
-
-    } finally {
-      // Ensures that the client will close when you finish/error
-      await client.close();
-    }
-  }
-  run().catch(console.dir);
 
 //socket
 const server = app.listen(port, "0.0.0.0" ,() => {})

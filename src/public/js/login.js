@@ -28,7 +28,7 @@ form.addEventListener("submit", (e)=> {
     })
 })
 
-logoutButton.addEventListener("click", (e) => {
+/*logoutButton.addEventListener("click", (e) => {
     e.preventDefault()
     fetch("/api/session/logout", {
         methos: "POST",
@@ -37,4 +37,4 @@ logoutButton.addEventListener("click", (e) => {
             window.location.replace("/login")
         }
     })
-})
+})*/

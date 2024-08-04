@@ -114,7 +114,7 @@ const connectMongoDB = async () => {
 }
 
 
-connectMongoDB()
+await connectMongoDB()
 
 //socket
 const server = app.listen(port, "0.0.0.0" ,() => {})

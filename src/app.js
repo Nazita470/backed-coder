@@ -92,6 +92,7 @@ app.use("/", viewRouter)
 app.use("/apidocs", swaggerUiExpress.serve,swaggerUiExpress.setup(specs, {
     customCss: ".swagger-ui .topbar {display: none}"
 }))
+mongoose.set('bufferCommands', false);
 
 //Error
 app.use(errorsHandler)

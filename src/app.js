@@ -115,7 +115,7 @@ const connectMongoDB = async () => {
 connectMongoDB()
 
 //socket
-const server = app.listen(port, () => {})
+const server = app.listen(port, "0.0.0.0" ,() => {})
 
 const socketServer = new Server(server)
 const mailManager = new MailManager()

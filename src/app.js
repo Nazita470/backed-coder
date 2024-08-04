@@ -104,17 +104,15 @@ app.use(passport.session())
 //Mongo
 const connectMongoDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URL)
-        console.log("Conectado a mongo")
-
+       await mongoose.connect(process.env.MONGO_URL)
     } catch (error) {
-        console.error(error)
-        process.exit()
+        
     }
+    
 }
 
 
-await connectMongoDB()
+connectMongoDB()
 
 //socket
 const server = app.listen(port, "0.0.0.0" ,() => {})

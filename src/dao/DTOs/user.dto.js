@@ -1,6 +1,6 @@
 export default class UserDTO {
     getUserToFront = (valores) => {
-       const last_connection = valores.last_connection.toLocaleString('en-US', { timeZoneName: 'short' })
+       const last_connection = valores.last_connection
        const user = {
             name: `${valores.name} ${valores.last_name}`,
             age:valores.age,

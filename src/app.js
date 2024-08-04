@@ -92,7 +92,6 @@ app.use("/", viewRouter)
 app.use("/apidocs", swaggerUiExpress.serve,swaggerUiExpress.setup(specs, {
     customCss: ".swagger-ui .topbar {display: none}"
 }))
-mongoose.set('bufferCommands', false);
 
 //Error
 app.use(errorsHandler)
@@ -105,7 +104,10 @@ app.use(passport.session())
 //Mongo
 const connectMongoDB = async () => {
     try {
-       await mongoose.connect(process.env.MONGO_URL)
+       await mongoose.connect(process.env.MONGO_URL, {
+        bufferCommands: true,
+        bufferMaxEntries:0
+       })
     } catch (error) {
         
     }

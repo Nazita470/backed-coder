@@ -112,13 +112,9 @@ const connectMongoDB = async () => {
     
 }
 
-try {
-    await mongoose.connect(process.env.MONGO_URL)
- } catch (error) {
-     
- }
 
-//connectMongoDB()
+
+connectMongoDB()
 
 
 //socket

@@ -25,7 +25,6 @@ import swaggerJSDoc from "swagger-jsdoc"
 import swaggerUiExpress from "swagger-ui-express"
 import ticket_router from "./routes/ticketRouter.js"
 import ProductsManager from "./dao/services/product.mongo.dao.js"
-import { MongoClient, ServerApiVersion } from "mongodb"
 
 const productsManager = new ProductsManager()
 const app = express()
@@ -112,9 +111,9 @@ const connectMongoDB = async () => {
     
 }
 
-
-
-connectMongoDB()
+connectMongoDB().then(() => {
+    console.log("Conectado")
+})
 
 
 //socket
@@ -144,7 +143,4 @@ socketServer.on("connection", socket => {
     })
 })
 
-
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 

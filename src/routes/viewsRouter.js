@@ -70,8 +70,8 @@ viewRouter.get("/products", authLogin, (req, res) => {
     productRepositories.getByPage(obj)
     .then(result => {
          result.isValid = page >= 1 && page <= result.totalPages
-         result.nextLink = result.hasNextPage ? `https://backed-coder-production-1cd6.up.railway.app/?page=${result.nextPage}${urlParams}`: null
-         result.prevLink = result.hasPrevPage ? `https://backed-coder-production-1cd6.up.railway.app/?page=${result.prevPage}${urlParams}` : null
+         result.nextLink = result.hasNextPage ? `https://backed-coder-production-1cd6.up.railway.app/products?page=${result.nextPage}${urlParams}`: null
+         result.prevLink = result.hasPrevPage ? `https://backed-coder-production-1cd6.up.railway.app/products?page=${result.prevPage}${urlParams}` : null
          if(req.session.user) {
             result.hasUser = true
             result.isUsuario = req.session.user.rol == "usuario" || req.session.user.rol == "premium"

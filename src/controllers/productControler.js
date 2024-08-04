@@ -28,8 +28,8 @@ class ProductController {
             sort: sort
         }
             const result = await productRepositories.getByPage(obj)
-            result.nextLink = result.hasNextPage ? `http://localhost:8080/products?page=${result.nextPage}${urlParams}`: null
-            result.prevLink = result.hasPrevPage ? `http://localhost:8080/products?page=${result.prevPage}${urlParams}` : null
+            result.nextLink = result.hasNextPage ? `https://backed-coder-production-1cd6.up.railway.app/products?page=${result.nextPage}${urlParams}`: null
+            result.prevLink = result.hasPrevPage ? `https://backed-coder-production-1cd6.up.railway.app/products?page=${result.prevPage}${urlParams}` : null
             res.send(result)
     }
 
